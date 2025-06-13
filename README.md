@@ -5,7 +5,7 @@
  ```html
 <div id="calendar"></div>
 ```
-![https://github.com/rtian001/rtian-calendar/blob/main/calendar.png]
+![calendar.png]()
 
  ```JavaScript
  let calender = new rtianCalender('#calendar');
