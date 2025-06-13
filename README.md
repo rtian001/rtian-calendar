@@ -2,22 +2,22 @@
 ## 日历组件
 
  使用方法：默认显示当前月份,可以设置 options.date显示指定日期月份
- ```
+ ```html
 <div id="calendar"></div>
 ```
 
- ```
+ ```JavaScript
  let calender = new rtianCalender('#calendar');
  calender.render();
 ```
  或：
- ```
+ ```JavaScript
  let calender = new rtianCalender();
  calender.render('#calendar');
 ```
 可以自定义点击日期事件和日历月份切换事件
 
- ```
+ ```JavaScript
  let calender = new rtianCalender();
  calender.render({
       elem: '#calendar',
@@ -28,7 +28,7 @@
  });
 ```
 #### 示例文件
-```
+```html
 <link rel="stylesheet" href="rtianCalendar.css">
 <script src="rtianCalendar.js"></script>
 <div id="calendar"></div>
