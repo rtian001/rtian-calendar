@@ -6,7 +6,13 @@
 <div id="calendar"></div>
 ```
 ![calendar.png](calendar.png)
-
+1. 默认显示当前月份
+2. 显示指定日期的月份
+3. 是否显示公共节假日
+4. 自定义节假日（值班日）
+5. 自定义点击日期事件：内置参数：date，当前日期字符串
+6. 自定义切换月份事件：内置参数：date，当前日期字符串
+7. 其他属性：自定义日历组件宽度、高度，设置星期起始日
  ```JavaScript
  let calender = new rtianCalender('#calendar');
  calender.render();
