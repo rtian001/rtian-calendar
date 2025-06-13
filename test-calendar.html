@@ -14,7 +14,7 @@
         <div id="res"></div>
         <script>
             const resdom = document.querySelector('#res');
-            const calender = new rtianCalender('#calendar').render({ showPublicHoliday: true });
+            const calender = new rtianCalender('#calendar').render({ showPublicHoliday: false });
             var holiday = {}
 
             //模拟异步获取自定义节假日
@@ -29,7 +29,7 @@
                 return new Promise((resolve, reject) => {
                     setTimeout(() => {
                         resolve(arr)
-                    }, 300);
+                    }, 0);
                 })
             }
             //获取指定月份节假日，并渲染到日历

@@ -3,7 +3,7 @@
     min-height: 250px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 0 1px rgba(0, 0, 0, 1); */
     padding: 5px;
     border-radius: 4px;
     font-family: "Microsoft YaHei", "微软雅黑", "宋体", "Arial", "Helvetica", "sans-serif";
@@ -35,6 +35,7 @@
     flex: 1;
     border-collapse: collapse;
     display: flex;
+    flex-direction: column;
 }
 
 #rtian-calendar table>tbody {
@@ -43,12 +44,12 @@
     flex-direction: column;
 }
 
-#rtian-calendar table>tbody>tr {
+#rtian-calendar table tr {
     flex: 1;
     display: flex;
 }
 
-#rtian-calendar table>tbody>tr.th {
+#rtian-calendar table>thead {
     flex: 0 1 30px;
 }
 
@@ -72,23 +73,23 @@
     justify-content: center;
     align-items: center;
     border-radius: 3px;
-    border: 1px solid #f5f5f5;
+    /* border: 1px solid #f5f5f5; */
     color: #ccc;
     position: relative;
 }
 
 #rtian-calendar .day.cday {
-    background-color: #f6f6f6;
+    /* background-color: #f6f6f6; */
     color: #123;
-    transition: all 0.2s;
+    /* transition: all 0.2s; */
 }
 
 #rtian-calendar div.day.cday.holiday {
-    background: #dde;
+    background: #eeeef6;
 }
 
 #rtian-calendar .day.cday.holiday::after {
-    content: '值';
+    content: '班';
     display: block;
     width: 14px;
     height: 14px;
@@ -110,7 +111,10 @@
 #rtian-calendar div.day.cday.active>span.day-h {
     color: #fff;
 }
+#rtian-calendar .day.today{
+    border: 1px solid #f2f2f2;
 
+}
 #rtian-calendar .day.today::before {
     content: '今';
     display: block;
@@ -127,15 +131,16 @@
 
 #rtian-calendar .day>span.day-h {
     position: absolute;
-    bottom: -1px;
+    bottom: 0px;
     display: block;
-    font-size: 10px;
-    color: #8c8;
+    /* font-family:  "sans-serif","Helvetica","Arial","Microsoft YaHei", "微软雅黑",   "宋体"; */
+    font-size: 11px;
+    /* color: #69f; */
     height: 10px;
     line-height: 10px;
     overflow: hidden;
 }
 
 #rtian-calendar .cday>span.day-h {
-    color: #0a0;
+    color: #f80;
 }

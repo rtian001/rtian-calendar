@@ -29,8 +29,16 @@
  calender.render({
       elem: '#calendar',
       showPbulicHoliday: true,
+      date:'2025-05-01',
+      weekstart:0,
+      width:400,
+      height:500,
+      holiday:[],
       done: function(dt){
           console.log(dt)
+      },
+      change: function(dt){
+         //自定义事件
       }
  });
 ```

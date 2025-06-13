@@ -40,13 +40,7 @@
         date = this.today;
         publicHoliday = {
             '01-01': '元旦',
-            '03-08': '妇女节',
             '05-01': '劳动节',
-            '05-04': '青年节',
-            '06-01': '儿童节',
-            '07-01': '建党节',
-            '08-01': '建军节',
-            '09-10': '教师节',
             '10-01': '国庆节',
         };
 
@@ -69,13 +63,13 @@
                     break;
                 }
             }
-            let table = `<table>${th}${tr}</table>`
+            let table = `<table><thead>${th}</thead><tbody>${tr}</tbody></table>`
             let head = '<div class="yearmonth"><div title="上一月" class="prev-month"><</div><div title="返回今日" class="month-year"></div><div title="下一月" class="next-month">></div></div>'
             let html = `<div id="rtian-calendar">${head}${table}</div>`
             this.dom.innerHTML = html;
             let div = this.dom.querySelector('#rtian-calendar');
-            div.style.width = this.width + 'px';
-            div.style.height = this.height + 'px';
+            div.style.width = (this.width - 10) + 'px';
+            div.style.height = (this.height) + 'px';
             this.days = this.dom.querySelectorAll('.day');
             this.addClickEvent();
         };
