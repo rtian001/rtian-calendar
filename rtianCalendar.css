@@ -3,18 +3,19 @@
     min-height: 250px;
     display: flex;
     flex-direction: column;
-    /* box-shadow: 0 0 1px rgba(0, 0, 0, 1); */
+    box-shadow: 0 0 1px #000;
     padding: 5px;
     border-radius: 4px;
     font-family: "Microsoft YaHei", "微软雅黑", "宋体", "Arial", "Helvetica", "sans-serif";
     user-select: none;
+    font-size: 13px;
 }
 
 #rtian-calendar .yearmonth {
-    flex: 0 1 50px;
+    flex: 0 3em;
     display: flex;
-    font-size: 18px;
-    margin-bottom: 10px;
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
     border-bottom: 1px solid #eee;
     text-shadow: 0 0 1px #567;
     justify-content: center;
@@ -33,29 +34,22 @@
 
 #rtian-calendar table {
     flex: 1;
+}
+
+#rtian-calendar[theme="grid"] table {
     border-collapse: collapse;
-    display: flex;
-    flex-direction: column;
 }
 
-#rtian-calendar table>tbody {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+#rtian-calendar[theme="block"] table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    font-size: 1em;
 }
 
-#rtian-calendar table tr {
-    flex: 1;
-    display: flex;
-}
 
-#rtian-calendar table>thead {
-    flex: 0 1 30px;
-}
 
 #rtian-calendar th,
 #rtian-calendar td {
-    flex: 1;
     cursor: default;
 }
 
@@ -65,15 +59,13 @@
 }
 
 #rtian-calendar .day {
-    height: 100%;
     text-align: center;
     box-sizing: border-box;
     margin: auto;
-    display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 3px;
-    /* border: 1px solid #f5f5f5; */
+    border: 1px solid #f5f5f5;
     color: #ccc;
     position: relative;
 }
@@ -84,47 +76,54 @@
     /* transition: all 0.2s; */
 }
 
-#rtian-calendar div.day.cday.holiday {
+#rtian-calendar td.day.cday:not(.active):hover {
+    cursor: pointer;
+    background: #e0eae0;
+}
+
+#rtian-calendar .day.cday.holiday {
     background: #eeeef6;
 }
 
 #rtian-calendar .day.cday.holiday::after {
     content: '班';
     display: block;
-    width: 14px;
-    height: 14px;
+    width: 1.1em;
+    height: 1.1em;
     border-radius: 3px;
-    line-height: 14px;
+    line-height: 1.1em;
     position: absolute;
-    top: -2px;
-    right: 0;
-    font-size: 10px;
+    top: 0px;
+    right: 1px;
+    font-size: 0.8em;
     color: #fff;
     background: #191;
 }
 
-#rtian-calendar div.day.cday.active {
+#rtian-calendar .day.cday.active {
     background-color: #595;
     color: #fff;
 }
 
-#rtian-calendar div.day.cday.active>span.day-h {
+#rtian-calendar .day.cday.active>span.day-h {
     color: #fff;
 }
-#rtian-calendar .day.today{
+
+#rtian-calendar .day.today {
     border: 1px solid #f2f2f2;
 
 }
+
 #rtian-calendar .day.today::before {
     content: '今';
     display: block;
-    width: 14px;
-    height: 14px;
-    line-height: 14px;
+    width: 1.1em;
+    height: 1.1em;
+    line-height: 1.1em;
     position: absolute;
-    top: -2px;
-    left: 0;
-    font-size: 10px;
+    top: 1px;
+    left: 1px;
+    font-size: 0.8em;
     color: #fff;
     background: rgba(105, 105, 255, 0.3);
 }
@@ -134,7 +133,7 @@
     bottom: 0px;
     display: block;
     /* font-family:  "sans-serif","Helvetica","Arial","Microsoft YaHei", "微软雅黑",   "宋体"; */
-    font-size: 11px;
+    font-size: 1em;
     /* color: #69f; */
     height: 10px;
     line-height: 10px;

@@ -1,181 +1,227 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="rtianCalendar.css">
-    <script src="rtianCalendar.js"></script>
-    <style>
-        body {
-            background: #f0f0f0;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="rtianCalendar.css">
+        <link rel="stylesheet" href="rtianDuty.css">
+        <script src="rtianCalendar.js"></script>
+        <script src="rtianDuty.js"></script>
+        <style>
+            body {
+                background: #f0f0f0;
+            }
 
-        main {
-            display: flex;
-            height: calc(100vh - 20px);
-            width: 1000px;
-            margin: 0 auto;
-        }
+            main {
+                display: flex;
+                height: calc(100vh - 20px);
+                width: 1000px;
+                margin: 0 auto;
+            }
 
-        aside {
-            flex: 0 0 340px;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 10px;
-            border-radius: 5px;
-        }
+            aside {
+                flex: 0 0 300px;
+                background: #fff;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding-top: 10px;
+                border-radius: 5px;
+            }
 
-        aside .calendar-title {
-            width: 300px;
-            height: 40px;
-            font-size: 20px;
-            line-height: 40px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-align: left;
-            /* padding-left:10px; */
-            border-bottom: 1px solid #99c;
-            box-sizing: border-box;
-        }
+            aside .calendar-title {
+                width: 280px;
+                height: 40px;
+                font-size: 20px;
+                line-height: 40px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                text-align: left;
+                /* padding-left:10px; */
+                border-bottom: 1px solid #99c;
+                box-sizing: border-box;
+            }
 
-        aside .duty-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #69e;
-            padding-left: 10px;
-        }
+            aside .duty-title {
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: #69e;
+                padding-left: 10px;
+            }
 
-        .aside>.duty-section {
-            display: none;
-        }
+            .aside>.duty-section {
+                display: none;
+            }
 
-        aside .calendar-desc {
-            font-size: 16px;
-            color: #999;
-            margin-bottom: 10px;
-            text-align: center;
-        }
+            aside .calendar-desc {
+                font-size: 16px;
+                color: #999;
+                margin-bottom: 10px;
+                text-align: center;
+            }
 
-        article {
-            margin-left: 10px;
-            flex: 1;
-            /* background: #fff; */
-        }
+            article {
+                margin-left: 10px;
+                flex: 1;
+                /* background: #fff; */
+            }
 
-        .aside {
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+            .aside {
+                width: 280px;
+                /* border: 1px solid #ccc; */
+                border-radius: 5px;
+            }
 
-        .calendar-desc>ol>li {
-            padding: 0;
-            margin: 5px 0;
-            text-align: left;
-            color: #999;
-        }
+            .calendar-desc>ol>li {
+                padding: 0;
+                margin: 5px 0;
+                text-align: left;
+                color: #999;
+            }
 
-        article {
-            display: flex;
-            flex-direction: column;
-        }
+            article {
+                display: flex;
+                flex-direction: column;
+            }
 
-        .sectiontitle {
-            flex: 0 0 40px;
-            font-size: 18px;
-            line-height: 40px;
-            font-weight: bold;
-            color: #69e;
-            padding-left: 10px;
-            background: #fff;
-            margin-bottom: 10px;
-        }
-        #duty-content{
-            flex: 1;
-            padding: 10px;
-            background: #fff;
-        }
-        .sectioncontent{
-            border-radius: 5px;
-            
-        }
-    </style>
-</head>
+            .sectiontitle {
+                flex: 0 0 40px;
+                font-size: 18px;
+                line-height: 40px;
+                font-weight: bold;
+                color: #69e;
+                padding-left: 10px;
+                background: #fff;
+                margin-bottom: 10px;
+            }
 
-<body>
-    <main>
-        <aside>
-            <div class="calendar-title">值班日历</div>
-            <div class="aside">
-                <div id="calendar"></div>
-                <div class="duty-section">
-                    <div class="duty-title">日程安排</div>
-                    <div class="calendar-desc">
-                        <!-- 暂无日程 -->
-                        <ol>
-                            <li>06月10日：处级干部值班</li>
-                            <li>06月14日：处级干部值班</li>
-                            <li>06月20日：处级干部值班</li>
-                            <li>06月27日：处级干部值班</li>
-                        </ol>
+            #duty-content {
+                flex: 1;
+                padding: 10px;
+                background: #fff;
+                overflow-y: auto;
+                overflow-x: hidden;
+                border: 10px solid #fff;
+                padding: 10px;
+            }
+
+            .sectioncontent {
+                border-radius: 5px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <main>
+            <aside>
+                <div class="calendar-title">值班日历</div>
+                <div class="aside">
+                    <div id="calendar"></div>
+                    <div class="duty-section">
+                        <div class="duty-title">日程安排</div>
+                        <div class="calendar-desc">
+                            <!-- 暂无日程 -->
+                            <ol>
+                                <li>06月10日：处级干部值班</li>
+                                <li>06月14日：处级干部值班</li>
+                                <li>06月20日：处级干部值班</li>
+                                <li>06月27日：处级干部值班</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
+            </aside>
+            <article>
+                <div class="sectiontitle">值班日期：<span>2026-06-13(周五)</span></div>
+                <div id="duty-content" class="sectioncontent"></div>
+            </article>
+        </main>
+        <script>
+            const resdom = document.querySelector('#res');
+            const calender = new rtianCalender('#calendar').render({ showPublicHoliday: true, theme: "block", width: 280, height: 330 });
+            var holiday = {}
 
-            </div>
-
-
-        </aside>
-        <article>
-            <div class="sectiontitle">值班日期：<span>2026-06-13(周五)</span></div>
-            <div id="duty-content" class="sectioncontent"></div>
-        </article>
-    </main>
-
-
-    <script>
-        const resdom = document.querySelector('#res');
-        const calender = new rtianCalender('#calendar').render({ showPublicHoliday: true });
-        var holiday = {}
-
-        //模拟异步获取自定义节假日
-        async function getHolidays(ym) {
-            let count = ~~(Math.random() * 5 + 3)
-            let arr = []
-            for (let i = 0; i < count; i++) {
-                let d = ~~(Math.random() * 28 + 1)
-                arr.push(`${ym}-${d.toString().padStart(2, '0')}`)
+            //模拟异步获取自定义节假日
+            async function getHolidays(ym) {
+                let count = ~~(Math.random() * 2 + 3)
+                let arr = []
+                for (let i = 0; i < count; i++) {
+                    let d = ~~(Math.random() * 28 + 1)
+                    arr.push(`${ym}-${d.toString().padStart(2, '0')}`)
+                }
+                arr = [...new Set(arr)]
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(arr)
+                    }, 0);
+                })
             }
-            arr = [...new Set(arr)]
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    resolve(arr)
-                }, 0);
+            //获取指定月份节假日，并渲染到日历
+            getHolidays('2025-06').then(data => {
+                calender.renderMaker('2025-06-10,2025-06-22');
             })
-        }
-        //获取指定月份节假日，并渲染到日历
-        getHolidays('2025-06').then(data => {
-            calender.renderMaker('2025-06-10,2025-06-22');
-        })
 
-        //自定义事件：切换月份时，获取当前月份的节假日，并渲染到日历
-        calender.change = function (date) {
-            let ym = date.slice(0, 7)
-            getHolidays(ym).then(data => {
-                calender.renderMaker(data);
-            })
-            //其他代码
-            resdom.innerHTML = 'change事件:切换到' + date;
-        }
-        //自定义事件：切换到指定日期
-        calender.done = function (date) {
-            resdom.innerHTML = 'done事件:切换到' + date;
-        }
-    </script>
-</body>
+            const duty_title = document.querySelector('.sectiontitle>span');
+
+            //自定义事件：切换月份时，获取当前月份的节假日，并渲染到日历
+            calender.change = async function (date) {
+                let ym = date.slice(0, 7)
+                getHolidays(ym).then(data => {
+                    calender.renderMaker(data);
+                })
+                await domain(date);
+
+            }
+            //自定义事件：切换到指定日期
+            calender.done = async function (date) {
+                await domain(date);
+            }
+
+            //自定义事件：点击日期
+            async function domain(dt) {
+                let d = new Date(dt);
+                let day = d.getDay();
+                let days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+                let dtstr = `${dt}(${days[day]})`;
+                duty_title.innerHTML = dtstr;
+                const data = await dutydb_json(dt);
+                const json = await data2json(data);
+                rtianDuty.render({
+                    elem: '#duty-content',
+                    data: json
+                })
+
+            }
+
+            async function dutydb_json(date) {
+                return new Promise((resolve, reject) => {
+                    fetch('./data-0605.json').then(res => res.json()).then(rows => {
+                        let data = rows.filter(item => item.date == date);
+                        resolve(data);
+                    })
+                })
+            }
+            async function data2json(data) {
+                let template = await fetch('./duty.json').then(res => res.json())
+                template.totale = data.length;
+                let res = template.data
+                data.forEach(item => {
+                    let { date, rygh, xm, tel, fzlx, fzmc, rylb } = item
+                    if (rylb == '') {
+                        res[fzlx][fzmc].push({ rygh, xm, tel })
+                    } else {
+                        res[fzlx][fzmc][rylb].push({ rygh, xm, tel })
+                    }
+                })
+                return template;
+            }
+
+
+
+        </script>
+    </body>
 
 </html>

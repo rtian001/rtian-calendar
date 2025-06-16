@@ -1,0 +1,133 @@
+.duty-items {
+    font-family: '仿宋';
+    font-size: 14px;
+}
+
+.flex {
+    width: 100%;
+    display: flex;
+}
+
+/* 值班类型 */
+.key-level-0 {
+    font-family: '微软雅黑';
+    font-size: 18px;
+    font-weight: bold;
+    color: #69f;
+}
+
+/* 各值班分组 */
+.level-0 {
+    border-top: 1px dashed #69f;
+}
+
+/* 校级 取消边框线，隐藏 */
+.level-0.item-0 {
+    border: 0;
+}
+
+.level-0.item-0 .level-1 {
+    background: #f2f2f2;
+}
+
+/* 校级标题，隐藏 */
+.level-0.item-0>.duty-key {
+    display: none;
+}
+
+/* 职能部门分组的部门名称 */
+.item-1 .level-1.flex>.duty-key {
+    flex: 0 0 80px;
+    height: 30px;
+    line-height: 30px;
+    /* padding-left: 10px; */
+    /* text-align: center; */
+}
+
+/* 各部门块 */
+.duty-item.level-1 {
+    margin: 15px 0;
+    margin-left: 20px;
+}
+
+
+/* 校级 各部门 */
+.level-0 .level-1 .duty-key {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.level-0.item-0 .duty-item {
+    margin: 5px 0 5px 10px;
+    height: 30px;
+    line-height: 30px;
+    color: #f63;
+    font-weight: bold;
+}
+
+.level-0.item-1 .level-1 {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+
+.level-1>.duty-key {
+    font-size: 16px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.level-1.flex>.duty-key {
+    flex: 0 0 100px;
+}
+
+.level-1>.duty-items {
+    border: 1px solid #f2f2f2;
+    padding-left: 30px;
+    background: #f6f6f6;
+    border-radius: 5px;
+}
+
+.level-2 {
+    margin: 5px 0;
+}
+
+.key-level-2 {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.flex.level-2>.duty-key {
+    flex: 0 0 60px;
+    text-align: right;
+    height: 20px;
+    line-height: 20px;
+    margin: 2px 3px;
+}
+
+.duty-values {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    font-family: '微软雅黑';
+    font-size: 14px;
+}
+
+.duty-value {
+    flex: 0 0 160px;
+    height: 20px;
+    line-height: 20px;
+    border: 1px solid #f2f2f2;
+    background-color: #f2f2f2;
+    display: flex;
+    margin: 2px 3px;
+}
+
+.duty-value .name {
+    width: 60px;
+    text-align: center;
+}
+
+.name.space::first-letter {
+    letter-spacing: 1em;
+}

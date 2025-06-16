@@ -32,6 +32,7 @@
             this.weekstart = 1;
             this.weekstr = ['日', '一', '二', '三', '四', '五', '六', '日'];
         }
+        theme = "grid";
         width = 300;
         height = 350;
         showPublicHoliday = false;
@@ -48,7 +49,7 @@
             var wkstr = this.weekstr.slice(this.weekstart)
             let th = ''
             for (let i = 0; i < 7; i++) {
-                th += `<th><div class="week">${wkstr[i]}</div></th>`
+                th += `<th class="week"><div>${wkstr[i]}</div></th>`
             }
             th = `<tr class="th">${th}</tr>`
             let day = 1;
@@ -56,7 +57,7 @@
             for (let i = 0; i < 6; i++) {//行
                 let row = ''
                 for (let j = 0; j < 7; j++) {//列
-                    row += `<td><div class="day"></div></td>`
+                    row += `<td class="day"><div></div></td>`
                 }
                 tr += `<tr>${row}</tr>`
                 if (day > this.totalDay) {
@@ -65,7 +66,7 @@
             }
             let table = `<table><thead>${th}</thead><tbody>${tr}</tbody></table>`
             let head = '<div class="yearmonth"><div title="上一月" class="prev-month"><</div><div title="返回今日" class="month-year"></div><div title="下一月" class="next-month">></div></div>'
-            let html = `<div id="rtian-calendar">${head}${table}</div>`
+            let html = `<div id="rtian-calendar" theme="${this.theme}">${head}${table}</div>`
             this.dom.innerHTML = html;
             let div = this.dom.querySelector('#rtian-calendar');
             div.style.width = (this.width - 10) + 'px';
@@ -184,6 +185,7 @@
                 ('showPublicHoliday' in options) && (this.showPublicHoliday = options.showPublicHoliday);
                 ('width' in options) && (this.width = options.width);
                 ('height' in options) && (this.height = options.height);
+                ('theme' in options) && (this.theme = options.theme);
             }
             if (!this.dom) {
                 console.error('未设置日历容器ID')
