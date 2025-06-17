@@ -59,11 +59,20 @@
 
 /* 校级 各部门 */
 .level-0.item-0 .level-1 .key-level-1 {
-    font-size: 18px;
+    font-size: 15px;
     font-style: normal;
     font-weight: bold;
     font-family: '微软雅黑';
     padding-left: 10px;
+    color: #333;
+}
+
+.level-0.item-0 .level-1 .key-level-1::after {
+    content: '：';
+}
+
+.level-0.item-0 .level-1.item-1 .key-level-1 .letter1 {
+    letter-spacing: 5px;
 }
 
 .level-0.item-0 .duty-item {
@@ -85,13 +94,17 @@
     font-style: italic;
 }
 
-.item-2 .level-1>.duty-key>span {
+.item-2 .level-1>.duty-key>.key-level-1 {
+    /* background: #f2f2f2; */
     display: inline-block;
-    border-bottom: 5px solid #eee;
+    border: 1px solid #f2f2f2;
+    /* border-bottom: 5px solid #eee; */
+    border-radius: 5px 5px 0 0;
+    padding: 3px 5px;
 }
 
 .level-1.flex>.duty-key {
-    flex: 0 0 110px;
+    flex: 0 0 120px;
 }
 
 .level-1>.duty-items {
@@ -126,8 +139,9 @@
     flex: 0 0 160px;
     height: 30px;
     line-height: 30px;
-    border: 1px solid #f2f2f2;
+    border: 1px solid #ccc;
     background-color: #f2f2f2;
+    border-radius: 2px;
     display: flex;
     margin: 2px 3px;
     box-sizing: border-box;

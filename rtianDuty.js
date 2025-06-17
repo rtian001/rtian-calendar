@@ -10,9 +10,11 @@
         render: function (options) {
             let me = this;
             let data = options.data || {};
-            let dom = options.dom || {};
+            let elem = options.elem;
+            let dom = document.querySelector(elem)
             let html = me.renderDutyModule(data);
-            document.querySelector(options.elem).innerHTML = html;
+            dom.innerHTML = html;
+            dom.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
         renderDutyModule: function (data) {
@@ -20,7 +22,6 @@
             let d = data.data;
             let html = me.renderDutyhtml(d);
             return html;
-
         },
 
         renderDutyhtml: function (data, level = 0) {
@@ -50,7 +51,7 @@
                 } else {
                     childhtml = child
                 }
-                let keyhtml = `<div class="duty-key"><span class="key-level-${level}">${key.trim()}</span></div>`
+                let keyhtml = `<div class="duty-key"><div class="key-level-${level} "><span class="letter1">${key.slice(0, -1)}</span><span class="letter2">${key.slice(-1)}</span></div></div>`
                 let itemhtml = `<div class="duty-item level-${level} item-${idx++} ${isflex} ${ishidden}">${keyhtml}${childhtml}</div>`
                 html += itemhtml
             }

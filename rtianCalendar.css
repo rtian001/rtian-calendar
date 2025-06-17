@@ -8,11 +8,11 @@
     border-radius: 4px;
     font-family: "Microsoft YaHei", "微软雅黑", "宋体", "Arial", "Helvetica", "sans-serif";
     user-select: none;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 #rtian-calendar .yearmonth {
-    flex: 0 3em;
+    flex: 0 2em;
     display: flex;
     font-size: 1.5em;
     margin-bottom: 0.5em;
@@ -34,6 +34,15 @@
 
 #rtian-calendar table {
     flex: 1;
+}
+
+#rtian-calendar[theme="blank"] table {
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+#rtian-calendar[theme="blank"] .day {
+    border: 0;
 }
 
 #rtian-calendar[theme="grid"] table {

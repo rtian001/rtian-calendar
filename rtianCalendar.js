@@ -32,7 +32,7 @@
             this.weekstart = 1;
             this.weekstr = ['日', '一', '二', '三', '四', '五', '六', '日'];
         }
-        theme = "grid";
+        theme = "block";
         width = 300;
         height = 350;
         showPublicHoliday = false;

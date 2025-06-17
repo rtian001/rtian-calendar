@@ -30,11 +30,11 @@
             //初始化日历组件
             const calender = new rtianCalender('#calendar').render({
                 showPublicHoliday: true,
-                theme: "block",
+                // theme: "blank",
                 width: 280,
-                height: 330
+                height: 320
             });
-            const bashurl = 'http://localhost:30000';
+            const bashurl = 'http://localhost:3000';
             const cdate = formatDate(new Date());
             const rygh = '220002'
             init(cdate)

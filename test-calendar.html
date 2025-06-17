@@ -7,11 +7,27 @@
         <title>Document</title>
         <link rel="stylesheet" href="rtianCalendar.css">
         <script src="rtianCalendar.js"></script>
+        <style>
+            .box {
+                width: 100px;
+                /* border: 1px solid #000; */
+                text-align: justify;
+                font-size: 14px;
+            }
+
+            .box2 {
+                letter-spacing: 4.5px;
+            }
+        </style>
     </head>
 
     <body>
         <div id="calendar"></div>
         <div id="res"></div>
+        <div id="demo">
+            <div class="box box1">带班校领导</div>
+            <div class="box box2">处级干部</div>
+        </div>
         <script>
             const resdom = document.querySelector('#res');
             const calender = new rtianCalender('#calendar').render({ showPublicHoliday: false });
