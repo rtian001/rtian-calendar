@@ -99,3 +99,83 @@ article {
 .sectioncontent {
     border-radius: 5px;
 }
+
+.calendarico {
+    display: none;
+}
+
+
+/* ==============响应式====================== */
+@media screen and (max-width: 800px) {
+    main{
+        width: 100%;
+    }
+    aside {
+        display: none;
+    }
+    article{
+        flex: 1;
+        margin: 0;
+        width: auto !important;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    aside {
+        flex: 0 0 250px;
+        width: 100%;
+        background: #eee;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .aside {
+        width: 100%;
+    }
+
+    .calendar-title {
+        display: none;
+    }
+
+    #calendar {
+        background: #fff;
+        margin: 0;
+        padding: 10px;
+    }
+
+    #calendar>div {
+        width: 100% !important;
+        padding: 0;
+        height: 250px !important;
+    }
+
+    main {
+        width: auto;
+        flex-direction: column;
+    }
+
+    article {
+        width: 100%;
+        margin: 0;
+    }
+
+    .calendarico {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        cursor: pointer;
+    }
+
+    .calendarico>img {
+        width: 30px;
+    }
+
+    #calendar .yearmonth {
+        display: none !important;
+    }
+
+}

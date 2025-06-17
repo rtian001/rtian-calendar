@@ -7,9 +7,9 @@
         <title>值班日历</title>
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="rtianCalendar.css">
-        <link rel="stylesheet" href="rtianDuty.css">
+        <link rel="stylesheet" href="rtianDuty-0.css">
         <script src="rtianCalendar.js"></script>
-        <script src="rtianDuty.js"></script>
+        <script src="rtianDuty-0.js"></script>
     </head>
 
     <body>
@@ -30,17 +30,7 @@
             const calender = new rtianCalender('#calendar').render({ showPublicHoliday: true, theme: "block", width: 280, height: 330 });
             var holiday = {}
             const cdate = formatDate(new Date());
-            function formatDate(date) {
-                let y, m, d;
-                if (typeof date == 'string') {
-                    [y, m, d] = date.split(/-|\//g);
-                } else {
-                    y = date.getFullYear();
-                    m = date.getMonth() + 1;
-                    d = date.getDate();
-                }
-                return `${y}-${m.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`
-            }
+
             /*
                         //模拟异步获取自定义节假日
                         async function getHolidays(ym) {
@@ -66,10 +56,10 @@
             const duty_title = document.querySelector('.sectiontitle>span');
             var rows = [];
             async function init(fromatedate) {
-                // rows = await getMonthRows_fromDB(fromatedate.slice(0, 7));
-                // let duty_data = getMyDayFromMonthData(rows, rygh);
-                let month = fromatedate.slice(0, 7);
-                let duty_data = await getMyDuty(rygh, month);
+                rows = await getMonthRows_fromDB(fromatedate.slice(0, 7));//---本地测试数据
+                let duty_data = getMyDayFromMonthData(rows, rygh);//----
+                // let month = fromatedate.slice(0, 7);//====服务器访问
+                // let duty_data = await getMyDuty(rygh, month);//=====
                 calender.renderMaker(duty_data);
                 domain(fromatedate);
             }
@@ -92,12 +82,12 @@
                 let days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
                 let dtstr = `${dt}(${days[day]})`;
                 duty_title.innerHTML = dtstr;
-                // const json = await getDaydata2Duty(rows, dt);
-                const data = await getDayDuty(dt);
-                console.log(data)
+                const data = await getDaydata2Duty(rows, dt); //本地测试数据
+                // const data = await getDayDuty(dt); //从服务器获取
                 rtianDuty.render({
                     elem: '#duty-content',
-                    data: data
+                    data: data,
+                    fixname:true
                 })
 
             }
@@ -138,15 +128,25 @@
                 data.forEach(item => {
                     let { date, rygh, xm, tel, fzlx, fzmc, rylb } = item
                     if (rylb == '') {
-                        res[fzlx][fzmc].push({ rygh, xm, tel })
+                        res[fzlx][fzmc].push( [rygh, xm, tel] )
                     } else {
-                        res[fzlx][fzmc][rylb].push({ rygh, xm, tel })
+                        res[fzlx][fzmc][rylb].push( [rygh, xm, tel ])
                     }
                 })
                 return template;
             }
 
-
+            function formatDate(date) {
+                let y, m, d;
+                if (typeof date == 'string') {
+                    [y, m, d] = date.split(/-|\//g);
+                } else {
+                    y = date.getFullYear();
+                    m = date.getMonth() + 1;
+                    d = date.getDate();
+                }
+                return `${y}-${m.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`
+            }
 
         </script>
     </body>
