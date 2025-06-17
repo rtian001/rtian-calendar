@@ -5,13 +5,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>值班日历</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="rtianCalendar.css">
         <link rel="stylesheet" href="rtianDuty-0.css">
         <script src="rtianCalendar.js"></script>
         <script src="rtianDuty-0.js"></script>
         <script>
-            var bashurl = 'http://localhost:3000';
+            var bashurl = 'http://222.21.113.253:3000';
             var cdate = formatDate(new Date());
             var rygh = '220002'
             window.onload = async () => {
@@ -124,7 +125,8 @@
                 </div>
             </aside>
             <article>
-                <div class="sectiontitle">值班日期：<span>2026-06-13(周五)</span></div>
+                <div class="sectiontitle">值班日期：<span>2026-06-13(周五)</span><span class="calendarico"><img
+                            src="calendar.svg" alt="" srcset=""></span></div>
                 <div id="duty-content" class="sectioncontent"></div>
             </article>
         </main>

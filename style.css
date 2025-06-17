@@ -99,3 +99,45 @@ article {
 .sectioncontent {
     border-radius: 5px;
 }
+
+.calendarico {
+    display: none;
+}
+
+
+/* ==============响应式====================== */
+@media screen and (max-width: 450px) {
+    aside {
+        /* flex: 0 0 0; */
+        /* position: absolute; */
+        width: 100%;
+        padding-bottom: 20px;
+        background: #eee;
+    }
+
+    #calendar {
+        background: #fff;
+    }
+
+    #calendar>div {
+        width: 100% !important;
+    }
+
+    main {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .calendarico {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        cursor: pointer;
+    }
+
+    .calendarico>img {
+        width: 30px;
+    }
+
+}
