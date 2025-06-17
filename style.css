@@ -106,9 +106,16 @@ article {
 
 
 /* ==============响应式====================== */
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+    main{
+        width: 100%;
+    }
+}
+
 @media screen and (max-width: 800px) {
     main{
         width: 100%;
+        min-width: 330px;
     }
     aside {
         display: none;
