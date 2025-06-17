@@ -30,6 +30,9 @@
                 let valuehtml = ''
                 for (const value of data) {
                     let { rygh, xm, tel } = value;
+                    if (Array.isArray(value)) {
+                        [rygh, xm, tel] = value;
+                    }
                     let spaceclass = xm.length == 2 ? 'space' : '';
                     valuehtml += `<div class="duty-value"><span class="name ${spaceclass}">${xm}</span><span class="tel">${tel.trim()}</span></div>`
                 }

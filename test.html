@@ -4,114 +4,12 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>值班日历</title>
+        <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="rtianCalendar.css">
         <link rel="stylesheet" href="rtianDuty.css">
         <script src="rtianCalendar.js"></script>
         <script src="rtianDuty.js"></script>
-        <style>
-            body {
-                background: #f0f0f0;
-            }
-
-            main {
-                display: flex;
-                height: calc(100vh - 20px);
-                width: 1000px;
-                margin: 0 auto;
-            }
-
-            aside {
-                flex: 0 0 300px;
-                background: #fff;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding-top: 10px;
-                border-radius: 5px;
-            }
-
-            aside .calendar-title {
-                width: 280px;
-                height: 40px;
-                font-size: 20px;
-                line-height: 40px;
-                font-weight: bold;
-                margin-bottom: 10px;
-                text-align: left;
-                /* padding-left:10px; */
-                border-bottom: 1px solid #99c;
-                box-sizing: border-box;
-            }
-
-            aside .duty-title {
-                font-size: 16px;
-                font-weight: bold;
-                margin-bottom: 10px;
-                color: #69e;
-                padding-left: 10px;
-            }
-
-            .aside>.duty-section {
-                display: none;
-            }
-
-            aside .calendar-desc {
-                font-size: 16px;
-                color: #999;
-                margin-bottom: 10px;
-                text-align: center;
-            }
-
-            article {
-                margin-left: 10px;
-                flex: 1;
-                /* background: #fff; */
-            }
-
-            .aside {
-                width: 280px;
-                /* border: 1px solid #ccc; */
-                border-radius: 5px;
-            }
-
-            .calendar-desc>ol>li {
-                padding: 0;
-                margin: 5px 0;
-                text-align: left;
-                color: #999;
-            }
-
-            article {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .sectiontitle {
-                flex: 0 0 40px;
-                font-size: 18px;
-                line-height: 40px;
-                font-weight: bold;
-                color: #69e;
-                padding-left: 10px;
-                background: #fff;
-                margin-bottom: 10px;
-            }
-
-            #duty-content {
-                flex: 1;
-                padding: 10px;
-                background: #fff;
-                overflow-y: auto;
-                overflow-x: hidden;
-                border: 10px solid #fff;
-                padding: 10px;
-            }
-
-            .sectioncontent {
-                border-radius: 5px;
-            }
-        </style>
     </head>
 
     <body>
@@ -120,18 +18,6 @@
                 <div class="calendar-title">值班日历</div>
                 <div class="aside">
                     <div id="calendar"></div>
-                    <div class="duty-section">
-                        <div class="duty-title">日程安排</div>
-                        <div class="calendar-desc">
-                            <!-- 暂无日程 -->
-                            <ol>
-                                <li>06月10日：处级干部值班</li>
-                                <li>06月14日：处级干部值班</li>
-                                <li>06月20日：处级干部值班</li>
-                                <li>06月27日：处级干部值班</li>
-                            </ol>
-                        </div>
-                    </div>
                 </div>
             </aside>
             <article>
@@ -143,37 +29,56 @@
             const resdom = document.querySelector('#res');
             const calender = new rtianCalender('#calendar').render({ showPublicHoliday: true, theme: "block", width: 280, height: 330 });
             var holiday = {}
-
-            //模拟异步获取自定义节假日
-            async function getHolidays(ym) {
-                let count = ~~(Math.random() * 2 + 3)
-                let arr = []
-                for (let i = 0; i < count; i++) {
-                    let d = ~~(Math.random() * 28 + 1)
-                    arr.push(`${ym}-${d.toString().padStart(2, '0')}`)
+            const cdate = formatDate(new Date());
+            function formatDate(date) {
+                let y, m, d;
+                if (typeof date == 'string') {
+                    [y, m, d] = date.split(/-|\//g);
+                } else {
+                    y = date.getFullYear();
+                    m = date.getMonth() + 1;
+                    d = date.getDate();
                 }
-                arr = [...new Set(arr)]
-                return new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                        resolve(arr)
-                    }, 0);
-                })
+                return `${y}-${m.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`
             }
-            //获取指定月份节假日，并渲染到日历
-            getHolidays('2025-06').then(data => {
-                calender.renderMaker('2025-06-10,2025-06-22');
-            })
-
+            /*
+                        //模拟异步获取自定义节假日
+                        async function getHolidays(ym) {
+                            let count = ~~(Math.random() * 2 + 3)
+                            let arr = []
+                            for (let i = 0; i < count; i++) {
+                                let d = ~~(Math.random() * 28 + 1)
+                                arr.push(`${ym}-${d.toString().padStart(2, '0')}`)
+                            }
+                            arr = [...new Set(arr)]
+                            return new Promise((resolve, reject) => {
+                                setTimeout(() => {
+                                    resolve(arr)
+                                }, 0);
+                            })
+                        }
+                        //获取指定月份节假日，并渲染到日历
+                        getHolidays('2025-06').then(data => {
+                            calender.renderMaker('2025-06-10,2025-06-22');
+                        })
+            */
+            const rygh = '220002'
             const duty_title = document.querySelector('.sectiontitle>span');
+            var rows = [];
+            async function init(fromatedate) {
+                // rows = await getMonthRows_fromDB(fromatedate.slice(0, 7));
+                // let duty_data = getMyDayFromMonthData(rows, rygh);
+                let month = fromatedate.slice(0, 7);
+                let duty_data = await getMyDuty(rygh, month);
+                calender.renderMaker(duty_data);
+                domain(fromatedate);
+            }
+            init(cdate)
+
 
             //自定义事件：切换月份时，获取当前月份的节假日，并渲染到日历
             calender.change = async function (date) {
-                let ym = date.slice(0, 7)
-                getHolidays(ym).then(data => {
-                    calender.renderMaker(data);
-                })
-                await domain(date);
-
+                await init(date)
             }
             //自定义事件：切换到指定日期
             calender.done = async function (date) {
@@ -187,24 +92,46 @@
                 let days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
                 let dtstr = `${dt}(${days[day]})`;
                 duty_title.innerHTML = dtstr;
-                const data = await dutydb_json(dt);
-                const json = await data2json(data);
+                // const json = await getDaydata2Duty(rows, dt);
+                const data = await getDayDuty(dt);
+                console.log(data)
                 rtianDuty.render({
                     elem: '#duty-content',
-                    data: json
+                    data: data
                 })
 
             }
 
-            async function dutydb_json(date) {
+            async function getDayDuty(date) {
                 return new Promise((resolve, reject) => {
-                    fetch('./data-0605.json').then(res => res.json()).then(rows => {
-                        let data = rows.filter(item => item.date == date);
+                    fetch('http://localhost:3000/getduty?date=' + date).then(res => res.json()).then(data => {
                         resolve(data);
                     })
                 })
             }
-            async function data2json(data) {
+            async function getMyDuty(rygh, month) {
+                return new Promise((resolve, reject) => {
+                    fetch('http://localhost:3000/getmydutydate?rygh=' + rygh + '&month=' + month).then(res => res.json()).then(data => {
+                        resolve(data);
+                    })
+                })
+            }
+
+            async function getMonthRows_fromDB(yearmonth) {
+                return new Promise((resolve, reject) => {
+                    fetch('./data-0605.json').then(res => res.json()).then(rows => {
+                        let data = rows.filter(item => item.date.slice(0, 7) == yearmonth);
+                        resolve(data);
+                    })
+                })
+            }
+            function getMyDayFromMonthData(rows, rygh) {
+                let data = rows.filter(item => item.rygh == rygh).map(item => item.date);
+                return data;
+            }
+
+            async function getDaydata2Duty(rows, fromatdate) {
+                let data = rows.filter(item => item.date == fromatdate);
                 let template = await fetch('./duty.json').then(res => res.json())
                 template.totale = data.length;
                 let res = template.data
