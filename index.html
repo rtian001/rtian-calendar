@@ -7,9 +7,104 @@
         <title>值班日历</title>
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="rtianCalendar.css">
-        <link rel="stylesheet" href="rtianDuty.css">
+        <link rel="stylesheet" href="rtianDuty-0.css">
         <script src="rtianCalendar.js"></script>
-        <script src="rtianDuty.js"></script>
+        <script src="rtianDuty-0.js"></script>
+        <script>
+            var bashurl = 'http://localhost:3000';
+            var cdate = formatDate(new Date());
+            var rygh = '220002'
+            window.onload = async () => {
+                //初始化日历组件
+                var duty_title = document.querySelector('.sectiontitle>span');
+                const calender = new rtianCalender('#calendar')
+                calender.render({
+                    showPublicHoliday: true,
+                    theme: "block",
+                    width: 280,
+                    height: 320
+                });
+                init(cdate)
+                async function init(date) {
+                    await renderMyDuty(date);//在日历上显示个人值班日
+                    await renderDuty(date);//生成当日值班
+                }
+                //重定义日历事件：切换月份时，获取当前月份的节假日，并渲染到日历
+                calender.change = async function (date) {
+                    init(date)
+                }
+                //重定义日历事件：切换到指定日期
+                calender.done = async function (date) {
+                    await renderDuty(date);
+                }
+
+                //自定义事件：点击日期，渲染当日值班表
+                async function renderDuty(dt) {
+                    let d = new Date(dt);
+                    let day = d.getDay();
+                    let days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+                    let dtstr = `${dt}(${days[day]})`;
+                    duty_title.innerHTML = dtstr;
+                    const data = await getDayDuty(dt);
+                    if (data) {
+                        if (!rtianDuty.doms) {
+                            rtianDuty.render({
+                                elem: '#duty-content',
+                                data: data,
+                                fixname: true
+                            })
+                        } else {
+                            rtianDuty.reload({
+                                data: data
+                            })
+                        }
+
+                    } else {
+                        duty_title.innerHTML = dtstr + '无值班';
+                    }
+                }
+
+                async function renderMyDuty(date) {//在日历上显示个人值班日
+                    let month = date.slice(0, 7);
+                    let duty_data = await getMyDuty(rygh, month);
+                    calender.renderMaker(duty_data);
+                }
+
+                async function getDayDuty(date) {//获取单日值班表
+                    return new Promise((resolve, reject) => {
+                        fetch(`${bashurl}/getduty?date=${date}`).then(resp => {
+                            resolve(resp.json());
+                        }).catch(err => {
+                            reject('无法从服务器获取数据。');
+                        })
+                    })
+                }
+                async function getMyDuty(rygh, month) {
+                    //获取个人值班日 
+                    // //根据工号获取当月个人值班日期；数组
+                    return new Promise(async (resolve, reject) => {
+                        fetch(`${bashurl}/getmydutydate?rygh=${rygh}&month=${month}`).then(resp => {
+                            resolve(resp.json());
+                        }).catch(err => {
+                            reject('无法从服务器获取数据。');
+                        })
+                    })
+                }
+
+            }
+            function formatDate(date) {
+                let y, m, d;
+                if (typeof date == 'string') {
+                    [y, m, d] = date.split(/-|\//g);
+                } else {
+                    y = date.getFullYear();
+                    m = date.getMonth() + 1;
+                    d = date.getDate();
+                }
+                return `${y}-${m.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`
+            }
+
+        </script>
     </head>
 
     <body>
@@ -25,93 +120,6 @@
                 <div id="duty-content" class="sectioncontent"></div>
             </article>
         </main>
-        <script>
-            const duty_title = document.querySelector('.sectiontitle>span');
-            //初始化日历组件
-            const calender = new rtianCalender('#calendar').render({
-                showPublicHoliday: true,
-                theme: "blank",
-                width: 280,
-                height: 320
-            });
-            const bashurl = 'http://localhost:3000';
-            const cdate = formatDate(new Date());
-            const rygh = '220002'
-            init(cdate)
-
-            async function init(fromatedate) {
-                let month = fromatedate.slice(0, 7);
-                //根据工号获取当月个人值班日期；数组
-                let duty_data = await getMyDuty(rygh, month);
-                //在日历上显示个人值班日期标记
-                calender.renderMaker(duty_data);
-                //渲染当日值班表
-                renderDuty(fromatedate);
-            }
-
-            //重定义日历事件：切换月份时，获取当前月份的节假日，并渲染到日历
-            calender.change = async function (date) {
-                await init(date)
-            }
-            //重定义日历事件：切换到指定日期
-            calender.done = async function (date) {
-                await renderDuty(date);
-            }
-
-            //自定义事件：点击日期，渲染当日值班表
-            async function renderDuty(dt) {
-                let d = new Date(dt);
-                let day = d.getDay();
-                let days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-                let dtstr = `${dt}(${days[day]})`;
-                duty_title.innerHTML = dtstr;
-                const data = await getDayDuty(dt);
-                if (data) {
-                    rtianDuty.render({
-                        elem: '#duty-content',
-                        data: data
-                    })
-                } else {
-                    duty_title.innerHTML = dtstr + '无值班';
-                }
-
-            }
-
-            async function getDayDuty(date) {
-                return new Promise((resolve, reject) => {
-                    fetch(`${bashurl}/getduty?date=${date}`).then(resp => {
-                        resolve(resp.json());
-                    }).catch(err => {
-                        reject('无法从服务器获取数据。');
-                    })
-                })
-            }
-            async function getMyDuty(rygh, month) {
-                return new Promise(async (resolve, reject) => {
-                    fetch(`${bashurl}/getmydutydate?rygh=${rygh}&month=${month}`).then(resp => {
-                        resolve(resp.json());
-                    }).catch(err => {
-                        reject('无法从服务器获取数据。');
-                    })
-                })
-            }
-            function formatDate(date) {
-                let y, m, d;
-                if (typeof date == 'string') {
-                    [y, m, d] = date.split(/-|\//g);
-                } else {
-                    y = date.getFullYear();
-                    m = date.getMonth() + 1;
-                    d = date.getDate();
-                }
-                return `${y}-${m.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`
-            }
-
-
-
-
-
-        </script>
     </body>
 
 </html>

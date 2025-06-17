@@ -1,0 +1,169 @@
+.duty-items {
+    font-family: '仿宋';
+    font-size: 14px;
+}
+
+.duty-item:has(>.duty-values) {
+    width: 100%;
+    display: flex;
+}
+
+/* 值班类型 */
+.key-level-0 {
+    font-family: '微软雅黑';
+    font-size: 18px;
+    font-weight: bold;
+    color: #69f;
+}
+
+/* 各值班分组 */
+.level-0:not(.item-0) {
+    margin: 15px 0;
+    border-top: 1px dashed #69f;
+}
+
+/* 校级 取消边框线，隐藏 */
+.level-0.item-0 {
+    border: 0;
+}
+
+.level-0.item-0 .level-1 {
+    background: #f2f2f2;
+}
+
+/* 校级标题，隐藏 */
+.level-0.item-0>.duty-key {
+    display: none;
+}
+
+.level-0.item-0 .duty-value {
+    height: 30px;
+    line-height: 30px;
+    margin: 0;
+    border: 0;
+}
+
+/* 职能部门分组的部门名称 */
+.item-1 .duty-item:has(>.duty-values)>.duty-key {
+    flex: 0 0 80px;
+    height: 30px;
+    line-height: 30px;
+}
+
+/* 各部门块 */
+.duty-item.level-1 {
+    margin: 15px 0;
+    margin-left: 20px;
+}
+
+
+/* 校级 各部门 */
+.level-0.item-0 .level-1 .key-level-1 {
+    font-size: 15px;
+    font-style: normal;
+    font-weight: bold;
+    font-family: '微软雅黑';
+    padding-left: 10px;
+    color: #333;
+}
+
+.level-0.item-0 .level-1 .key-level-1::after {
+    content: '：';
+}
+
+.level-0.item-0 .level-1.item-1 .key-level-1 .letter1 {
+    letter-spacing: 5px;
+}
+
+.level-0.item-0 .duty-item {
+    margin: 5px 0;
+    height: 30px;
+    line-height: 30px;
+    color: #f63;
+    font-weight: bold;
+}
+
+.level-0.item-1 .level-1 {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+
+.level-1>.duty-key {
+    font-size: 16px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.item-2 .level-1>.duty-key>.key-level-1 {
+    /* background: #f2f2f2; */
+    display: inline-block;
+    border: 1px solid #f2f2f2;
+    /* border-bottom: 5px solid #eee; */
+    border-radius: 5px 5px 0 0;
+    padding: 3px 5px;
+}
+
+.item-0 .duty-item:has(>.duty-values).level-1>.duty-key {
+    flex: 0 0 120px;
+}
+
+.level-1>.duty-items {
+    border: 1px solid #f2f2f2;
+    background: #f6f6f6;
+    border-radius: 0 5px 5px 5px;
+}
+
+.duty-items:has(>.level-2) {
+    padding: 5px 0;
+    padding-left: 30px;
+}
+
+.duty-item:has(>.duty-values:empty) {
+    display: none;
+}
+
+.key-level-2 {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.duty-item:has(>.duty-values).level-2>.duty-key {
+    flex: 0 0 60px;
+    text-align: right;
+    height: 30px;
+    line-height: 30px;
+    margin: 2px 3px;
+}
+
+.duty-values {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    font-family: '微软雅黑';
+    font-size: 14px;
+}
+
+.duty-value {
+    flex: 0 0 160px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #ccc;
+    background-color: #f2f2f2;
+    border-radius: 2px;
+    display: flex;
+    margin: 2px 3px;
+    box-sizing: border-box;
+}
+
+.duty-value .name {
+    width: 60px;
+    text-align: center;
+}
+
+.name.space::first-letter {
+    letter-spacing: 1em;
+}
+
+.hidden {
+    display: none;
+}
