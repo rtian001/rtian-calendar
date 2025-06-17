@@ -24,6 +24,7 @@
 
 .level-0.item-0 .level-1 {
     background: #f2f2f2;
+    padding: 5px 0;
 }
 
 /* 校级标题，隐藏 */
@@ -113,7 +114,7 @@
     padding-left: 30px;
 }
 
-.duty-item:has(>.duty-values:empty) {
+.level-2.duty-item:has(>.duty-values:empty) {
     display: none;
 }
 
@@ -136,6 +137,17 @@
     flex-wrap: wrap;
     font-family: '微软雅黑';
     font-size: 14px;
+}
+
+.duty-values:empty::after,
+.duty-values:empty::before {
+    content: '';
+    display: block;
+    width: 160px;
+    height: 30px;
+    background: #f2f2f2;
+    margin: 2px 3px;
+    border-radius: 4px;
 }
 
 .duty-value {
