@@ -1,11 +1,15 @@
 # rtian-calendar
+
 ## 日历组件
 
  使用方法：默认显示当前月份,可以设置 options.date显示指定日期月份
+
  ```html
 <div id="calendar"></div>
 ```
+
 ![calendar.png](calendar.png)
+
 1. 默认显示当前月份
 2. 显示指定日期的月份
 3. 是否显示公共节假日
@@ -13,15 +17,19 @@
 5. 自定义点击日期事件：内置参数：date，当前日期字符串
 6. 自定义切换月份事件：内置参数：date，当前日期字符串
 7. 其他属性：自定义日历组件宽度、高度，设置星期起始日
+
  ```JavaScript
  let calender = new rtianCalender('#calendar');
  calender.render();
 ```
+
  或：
+
  ```JavaScript
  let calender = new rtianCalender();
  calender.render('#calendar');
 ```
+
 可以自定义点击日期事件和日历月份切换事件
 
  ```JavaScript
@@ -42,7 +50,9 @@
       }
  });
 ```
-#### 示例文件
+
+### 示例文件
+
 ```html
 <link rel="stylesheet" href="rtianCalendar.css">
 <script src="rtianCalendar.js"></script>
