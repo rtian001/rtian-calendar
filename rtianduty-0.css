@@ -48,6 +48,7 @@
     flex: 0 0 80px;
     height: 30px;
     line-height: 30px;
+    margin: 1px 0;
 }
 
 /* 各部门块 */
@@ -112,6 +113,48 @@
     border-radius: 0 5px 5px 5px;
 }
 
+/* =================鼠标悬停：========================== */
+.item-0 .level-1.duty-item:hover {
+    background: #def;
+    border-radius: 2px;
+}
+
+.item-0 .level-1:hover .duty-value {
+    background: none;
+}
+
+.item-1 .level-1.duty-item:hover {
+    background: #def;
+    border-radius: 2px;
+}
+
+.item-1 .level-1:hover>.duty-key {
+    font-style: normal;
+}
+
+.item-1 .level-1:hover .duty-value {
+    background: none;
+}
+
+/* 鼠标悬停：学院 */
+.level-1>.duty-items:hover {
+    background: #def;
+    border-color: #999;
+}
+
+.level-1>.duty-items:hover .duty-value {
+    background: #fff;
+}
+
+.level-1>.duty-key:has(+.duty-items:hover)>span {
+    background: #585;
+    color: #fff;
+    font-weight: bold;
+    border-color: #585;
+    font-style: normal;
+}
+
+/* ----------------------------------------------------------- */
 .duty-items:has(>.level-2) {
     padding: 5px 0;
     padding-left: 30px;
@@ -149,7 +192,7 @@
     width: 160px;
     height: 30px;
     background: #f2f2f2;
-    margin: 2px 3px;
+    margin: 1px 3px;
     border-radius: 4px;
 }
 
@@ -161,7 +204,7 @@
     background-color: #f2f2f2;
     border-radius: 2px;
     display: flex;
-    margin: 2px 3px;
+    margin: 1px 3px;
     box-sizing: border-box;
 }
 

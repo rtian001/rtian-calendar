@@ -38,7 +38,7 @@
 
                 }
             }
-
+            this.dom.scrollTo({ top: 0, behavior: 'smooth' });
         },
         getValueHtml(values) {
             let valuehtml = ''

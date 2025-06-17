@@ -14,7 +14,7 @@
             var bashurl = 'http://localhost:3000';
             var cdate = formatDate(new Date());
             var rygh = '220002'
-            window.onload = () => {
+            window.onload = async () => {
                 //初始化日历组件
                 var duty_title = document.querySelector('.sectiontitle>span');
                 const calender = new rtianCalender('#calendar')
@@ -25,7 +25,8 @@
                     width: 280,
                     height: 320
                 });
-                init(cdate)
+                await init(cdate)
+
                 async function init(date) {
                     await renderMyDuty(date);//在日历上显示个人值班日
                     await renderDuty(date);//生成当日值班
@@ -52,8 +53,9 @@
                             rtianDuty.render({
                                 elem: '#duty-content',
                                 data: data,
-                                fixname: true
+                                fixname: true //姓名对齐：两字和三字对齐
                             })
+                            fixLetterSpace();//修复 处级干部和带班校领导 对齐
                         } else {
                             rtianDuty.reload({
                                 data: data
@@ -90,6 +92,11 @@
                             reject('无法从服务器获取数据。');
                         })
                     })
+                }
+                function fixLetterSpace() {//修复文字对齐：4字和5字对齐
+                    let dom = document.querySelector('.item-0 .level-1.item-1 .key-level-1')
+                    let value = dom.innerText;
+                    dom.innerHTML = `<span class="letter1">${value.slice(0, -1)}</span><span>${value.slice(-1)}</span>`
                 }
 
             }
