@@ -14,13 +14,14 @@
             var bashurl = 'http://localhost:3000';
             var cdate = formatDate(new Date());
             var rygh = '220002'
-            window.onload = async () => {
+            window.onload = () => {
                 //初始化日历组件
                 var duty_title = document.querySelector('.sectiontitle>span');
                 const calender = new rtianCalender('#calendar')
                 calender.render({
                     showPublicHoliday: true,
                     theme: "block",
+                    // date: '2025-12-01',
                     width: 280,
                     height: 320
                 });

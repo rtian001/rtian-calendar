@@ -216,7 +216,8 @@
             let day = 1;
             for (let i = 0; i < 6; i++) {
                 for (let j = 0; j < 7; j++) {
-                    let _m = m
+                    let _y = y;
+                    let _m = m;
                     let _d = day;
                     let idx = i * 7 + j;
                     let div = days[idx];
@@ -234,8 +235,17 @@
                         div.classList.add('cday');
                         day++
                     }
+
+                    if (_m == 0) {
+                        _y = y - 1
+                        _m = 12
+                    }
+                    if (_m == 13) {
+                        _y = y + 1
+                        _m = 1
+                    }
                     div.innerHTML = _d;
-                    let datestr = `${y}-${_m.toString().padStart(2, '0')}-${_d.toString().padStart(2, '0')}`;
+                    let datestr = `${_y}-${_m.toString().padStart(2, '0')}-${_d.toString().padStart(2, '0')}`;
                     div.setAttribute('title', datestr)
                     //--------------------
                     //设置今日、选中日期、节假日等

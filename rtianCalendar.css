@@ -141,8 +141,10 @@
     position: absolute;
     bottom: 0px;
     display: block;
+    width: 100%;
     /* font-family:  "sans-serif","Helvetica","Arial","Microsoft YaHei", "微软雅黑",   "宋体"; */
     font-size: 0.8em;
+    text-align: center;
     /* color: #69f; */
     height: 10px;
     line-height: 10px;
