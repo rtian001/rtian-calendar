@@ -5,7 +5,7 @@ body {
 main {
     display: flex;
     height: calc(100vh - 20px);
-    width: 1000px;
+    width: 1020px;
     margin: 0 auto;
 }
 
@@ -38,17 +38,6 @@ aside .duty-title {
     margin-bottom: 10px;
     color: #69e;
     padding-left: 10px;
-}
-
-.aside>.duty-section {
-    display: none;
-}
-
-aside .calendar-desc {
-    font-size: 16px;
-    color: #999;
-    margin-bottom: 10px;
-    text-align: center;
 }
 
 article {
@@ -107,20 +96,22 @@ article {
 
 /* ==============响应式====================== */
 @media screen and (min-width: 800px) and (max-width: 1000px) {
-    main{
+    main {
         width: 100%;
     }
 }
 
 @media screen and (max-width: 800px) {
-    main{
+    main {
         width: 100%;
         min-width: 330px;
     }
+
     aside {
         display: none;
     }
-    article{
+
+    article {
         flex: 1;
         margin: 0;
         width: auto !important;
@@ -128,6 +119,10 @@ article {
 }
 
 @media screen and (max-width: 450px) {
+    .sectiontitle {
+        position: relative;
+    }
+
     aside {
         flex: 0 0 250px;
         width: 100%;
@@ -147,13 +142,13 @@ article {
         display: none;
     }
 
-    #calendar {
+    #mycalendar {
         background: #fff;
         margin: 0;
         padding: 10px;
     }
 
-    #calendar>div {
+    #mycalendar>div {
         width: 100% !important;
         padding: 0;
         height: 250px !important;
@@ -172,8 +167,8 @@ article {
     .calendarico {
         display: block;
         position: absolute;
-        top: 15px;
-        right: 20px;
+        top: 5px;
+        right: 10px;
         cursor: pointer;
     }
 
@@ -181,8 +176,8 @@ article {
         width: 30px;
     }
 
-    #calendar .yearmonth {
-        display: none !important;
+    #mycalendar .yearmonth {
+        /* display: none !important; */
     }
 
 }

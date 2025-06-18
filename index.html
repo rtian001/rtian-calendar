@@ -18,29 +18,34 @@
             window.onload = async () => {
                 //初始化日历组件
                 var duty_title = document.querySelector('.sectiontitle>span');
-                const calender = new rtianCalender('#calendar')
-                calender.render({
-                    showPublicHoliday: true,
-                    theme: "block",
+                const calendar = new rtianCalender('#mycalendar')
+                calendar.render({
+                    // showPublicHoliday: true,
+                    theme: "blank",
                     // date: '2025-12-01',
                     width: 280,
-                    height: 320
+                    height: 300,
+                    done: async function (date) {
+                        //重定义日历事件：切换月份时，获取当前月份的节假日，并渲染到日历
+                        await renderDuty(date);
+                    },
+                    change: async function (date) {
+                        //重定义日历事件：切换到指定日期
+                        await init(date)
+                    }
                 });
                 await init(cdate)
+
+                const calendarBtn = document.querySelector('.calendarico');
+                const calendarAside = document.querySelector('aside')
+                calendarBtn.addEventListener('click', () => {
+                    calendarAside.classList.toggle('hidden');
+                })
 
                 async function init(date) {
                     await renderMyDuty(date);//在日历上显示个人值班日
                     await renderDuty(date);//生成当日值班
                 }
-                //重定义日历事件：切换月份时，获取当前月份的节假日，并渲染到日历
-                calender.change = async function (date) {
-                    init(date)
-                }
-                //重定义日历事件：切换到指定日期
-                calender.done = async function (date) {
-                    await renderDuty(date);
-                }
-
                 //自定义事件：点击日期，渲染当日值班表
                 async function renderDuty(dt) {
                     let d = new Date(dt);
@@ -71,7 +76,7 @@
                 async function renderMyDuty(date) {//在日历上显示个人值班日
                     let month = date.slice(0, 7);
                     let duty_data = await getMyDuty(rygh, month);
-                    calender.renderMaker(duty_data);
+                    calendar.renderMaker(duty_data);
                 }
 
                 async function getDayDuty(date) {//获取单日值班表
@@ -121,12 +126,13 @@
             <aside>
                 <div class="calendar-title">值班日历</div>
                 <div class="aside">
-                    <div id="calendar"></div>
+                    <div id="mycalendar"></div>
                 </div>
             </aside>
             <article>
-                <div class="sectiontitle">值班日期：<span>2026-06-13(周五)</span><span class="calendarico"><img
-                            src="calendar.svg" alt="" srcset=""></span></div>
+                <div class="sectiontitle"> 值班日期：<span>2026-06-13(周五)</span>
+                    <span class="calendarico"><img src="calendar0.png" alt="" srcset=""></span>
+                </div>
                 <div id="duty-content" class="sectioncontent"></div>
             </article>
         </main>

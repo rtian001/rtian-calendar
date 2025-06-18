@@ -1,6 +1,6 @@
 .duty-items {
     font-family: '仿宋';
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .duty-item:has(>.duty-values) {
@@ -11,7 +11,7 @@
 /* 值班类型 */
 .key-level-0 {
     font-family: '微软雅黑';
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     color: #595;
 }
@@ -63,7 +63,7 @@
 
 /* 校级 各部门 */
 .level-0.item-0 .level-1 .key-level-1 {
-    font-size: 15px;
+    font-size: 18px;
     font-style: normal;
     font-weight: bold;
     font-family: '微软雅黑';
@@ -76,7 +76,7 @@
 }
 
 .level-0.item-0 .level-1.item-1 .key-level-1 .letter1 {
-    letter-spacing: 5px;
+    letter-spacing: 6px;
 }
 
 .level-0.item-0 .duty-item {
@@ -93,7 +93,7 @@
 }
 
 .level-1>.duty-key {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     font-style: italic;
 }
@@ -165,12 +165,11 @@
 }
 
 .key-level-2 {
-    font-size: 15px;
     font-weight: bold;
 }
 
 .duty-item:has(>.duty-values).level-2>.duty-key {
-    flex: 0 0 60px;
+    flex: 0 0 70px;
     text-align: right;
     height: 30px;
     line-height: 30px;
@@ -182,10 +181,9 @@
     display: flex;
     flex-wrap: wrap;
     font-family: '微软雅黑';
-    font-size: 14px;
 }
 
-.duty-values:empty::after,
+.item-1 .level-1 .duty-values:empty::after,
 .duty-values:empty::before {
     content: '';
     display: block;
@@ -197,7 +195,7 @@
 }
 
 .duty-value {
-    flex: 0 0 160px;
+    flex: 0 0 170px;
     height: 30px;
     line-height: 30px;
     border: 1px solid #ccc;

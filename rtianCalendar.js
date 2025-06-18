@@ -191,6 +191,7 @@
                 console.error('未设置日历容器ID')
                 return
             }
+            if (this.height < 280) this.showPublicHoliday = false;
             this.init();
             let [y, m, d] = this.date.split('-').map(n => n * 1)
             this.day = d
