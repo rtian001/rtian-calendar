@@ -47,6 +47,13 @@
                 calendarBtn.addEventListener('click', () => {
                     calendarAside.classList.toggle('hidden');
                 })
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 800) {
+                        calendarAside.classList.remove('hidden');
+                    } else {
+                        calendarAside.classList.add('hidden');
+                    }
+                })
 
                 async function init(date) {
                     await renderMyDuty(date);//在日历上显示个人值班日
