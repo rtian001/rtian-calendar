@@ -14,25 +14,24 @@
             ('fixname' in options) && (this.fixname = options.fixname);
             let elem = options.elem;
             this.dom = document.querySelector(elem)
-            let html = me.renderDutyModule(data);
+            let html = me.renderDutyhtml(data);
             this.dom.innerHTML = html;
             this.dom.scrollTo({ top: 0, behavior: 'smooth' });
             //获取各部门的dom
-            this.doms = this.getDeptDom(data.data)
+            this.doms = this.getDeptDom(data)
         },
-        reload(options) {
+        reload(data) {
             //无需重新生成框架，只需根据人数填充
-            let data = options.data;
-            let d = data.data;
-            for (let p in d) {
-                for (let dept in d[p]) {
-                    if (Array.isArray(d[p][dept])) {
-                        let valuehtml = this.getValueHtml(d[p][dept])
-                        this.doms[dept].innerHTML = valuehtml
+            let d = data;
+            for (let fzlx in d) {
+                for (let fzmc in d[fzlx]) {
+                    if (Array.isArray(d[fzlx][fzmc])) {
+                        let valuehtml = this.getValueHtml(d[fzlx][fzmc])
+                        this.doms[fzmc].innerHTML = valuehtml
                     } else {
-                        for (let c in d[p][dept]) {
-                            let valuehtml = this.getValueHtml(d[p][dept][c])
-                            this.doms[dept + c].innerHTML = valuehtml
+                        for (let rylb in d[fzlx][fzmc]) {
+                            let valuehtml = this.getValueHtml(d[fzlx][fzmc][rylb])
+                            this.doms[fzmc + rylb].innerHTML = valuehtml
                         }
                     }
 
@@ -41,6 +40,9 @@
             this.dom.scrollTo({ top: 0, behavior: 'smooth' });
         },
         getValueHtml(values) {
+            if (values.length == 0) {
+                return null
+            }
             let valuehtml = ''
             for (let value of values) {
                 let [rygh, xm, tel] = value;
@@ -50,18 +52,18 @@
             return valuehtml
         },
 
-        getDeptDom(d) {
+        getDeptDom(data) {
             let doms = this.dom.querySelectorAll('.duty-values')
             let res = {}
             let i = 0;
-            for (let p in d) {
-                for (let dept in d[p]) {
-                    if (Array.isArray(d[p][dept])) {
-                        res[dept] = doms[i]
+            for (let fzlx in data) {
+                for (let fzmc in data[fzlx]) {
+                    if (Array.isArray(data[fzlx][fzmc])) {
+                        res[fzmc] = doms[i]
                         i++
                     } else {
-                        for (let c in d[p][dept]) {
-                            res[dept + c] = doms[i]
+                        for (let rylb in data[fzlx][fzmc]) {
+                            res[fzmc + rylb] = doms[i]
                             i++
                         }
                     }
@@ -69,13 +71,6 @@
                 }
             }
             return res;
-        },
-
-        renderDutyModule: function (data) {
-            let me = this;
-            let d = data.data;
-            let html = me.renderDutyhtml(d);
-            return html;
         },
 
         renderDutyhtml: function (data, level = 0) {

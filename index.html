@@ -61,19 +61,18 @@
                     duty_title.innerHTML = dtstr;
                     const data = await getDayDuty(dt);
                     if (data) {
+                        let dutydata = data.data;
                         if (!rtianDuty.doms) {
                             //首次渲染，构建页面元素及内容
                             rtianDuty.render({
                                 elem: '#duty-content',
-                                data: data,
+                                data: dutydata,
                                 fixname: true //姓名对齐：两字和三字对齐
                             })
-                            fixLetterSpace();//修复 处级干部和带班校领导 对齐
+                            fixLetterSpace();//修复 处级干部和带班校领导 文字对齐
                         } else {
                             //仅更新人员数据
-                            rtianDuty.reload({
-                                data: data
-                            })
+                            rtianDuty.reload(dutydata)
                         }
                     } else {
                         duty_title.innerHTML = '<span style="color:red">获取数据异常！</span>';
