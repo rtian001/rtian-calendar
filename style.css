@@ -17,6 +17,7 @@ aside {
     align-items: center;
     padding-top: 10px;
     border-radius: 5px;
+    box-shadow: 0 0 10px 0 #abc;
 }
 
 aside .calendar-title {
@@ -27,7 +28,6 @@ aside .calendar-title {
     font-weight: bold;
     margin-bottom: 10px;
     text-align: left;
-    /* padding-left:10px; */
     border-bottom: 1px solid #99c;
     box-sizing: border-box;
 }
@@ -43,12 +43,10 @@ aside .duty-title {
 article {
     margin-left: 10px;
     flex: 1;
-    /* background: #fff; */
 }
 
 .aside {
     width: 280px;
-    /* border: 1px solid #ccc; */
     border-radius: 5px;
 }
 
@@ -66,10 +64,10 @@ article {
 
 .sectiontitle {
     flex: 0 0 40px;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 40px;
     font-weight: bold;
-    color: #595;
+    color: #369;
     padding-left: 10px;
     background: #fff;
     margin-bottom: 10px;
@@ -81,7 +79,8 @@ article {
     background: #fff;
     overflow-y: auto;
     overflow-x: hidden;
-    border: 10px solid #fff;
+    border-top: 10px solid #fff;
+    border-bottom: 10px solid #fff;
     padding: 10px;
 }
 
