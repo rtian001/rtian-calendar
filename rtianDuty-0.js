@@ -77,7 +77,7 @@
             let idx = 0
             let html = ''
             if (Array.isArray(data)) {
-                let valuehtml = this.getValueHtml(data)
+                let valuehtml = this.getValueHtml(data) || ''
                 let values = `<div class="duty-values">${valuehtml}</div>`
                 return values
             }

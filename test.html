@@ -86,8 +86,8 @@
                 // const data = await getDayDuty(dt); //从服务器获取
                 rtianDuty.render({
                     elem: '#duty-content',
-                    data: data,
-                    fixname:true
+                    data: data.data,
+                    fixname: true
                 })
 
             }
@@ -128,9 +128,9 @@
                 data.forEach(item => {
                     let { date, rygh, xm, tel, fzlx, fzmc, rylb } = item
                     if (rylb == '') {
-                        res[fzlx][fzmc].push( [rygh, xm, tel] )
+                        res[fzlx][fzmc].push([rygh, xm, tel])
                     } else {
-                        res[fzlx][fzmc][rylb].push( [rygh, xm, tel ])
+                        res[fzlx][fzmc][rylb].push([rygh, xm, tel])
                     }
                 })
                 return template;

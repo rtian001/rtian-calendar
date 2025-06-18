@@ -7,30 +7,14 @@
         <title>Document</title>
         <link rel="stylesheet" href="rtianCalendar.css">
         <script src="rtianCalendar.js"></script>
-        <style>
-            .box {
-                width: 100px;
-                /* border: 1px solid #000; */
-                text-align: justify;
-                font-size: 14px;
-            }
-
-            .box2 {
-                letter-spacing: 4.5px;
-            }
-        </style>
     </head>
 
     <body>
         <div id="calendar"></div>
         <div id="res"></div>
-        <div id="demo">
-            <div class="box box1">带班校领导</div>
-            <div class="box box2">处级干部</div>
-        </div>
         <script>
             const resdom = document.querySelector('#res');
-            const calender = new rtianCalender('#calendar').render({ showPublicHoliday: false });
+            const calender = new rtianCalender('#calendar').render({ showPublicHoliday: false, width: 500, height: 600 });
             var holiday = {}
 
             //模拟异步获取自定义节假日
@@ -66,6 +50,36 @@
             calender.done = function (date) {
                 resdom.innerHTML = 'done事件:切换到' + date;
             }
+
+
+
+            //=============================================测试排班
+            let arr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+            let startvalue = 3;
+            let start = startvalue - 1;
+            let newarr = arr.slice(start).concat(arr.slice(0, start))
+            let days = calender.days;
+            let idx = 0
+            days.forEach(day => {
+                if (day.classList.contains('cday')) {
+                    day.innerHTML += '<br>' + newarr[idx];
+                    idx++;
+                    idx = idx % 7
+                    if (idx % 7 == 0) {
+                        console.log('day:', newarr)
+                        newarr = newarr.slice(start).concat(newarr.slice(0, start))
+                    }
+                }
+            })
+            console.log('newarr:', newarr)
+            console.log(idx, idx % 7);
+            idx = idx % 7
+            let lastarr = newarr.slice(start).concat(newarr.slice(0, start))
+            console.log(lastarr)
+            // calender.render({
+            //     width: 500,
+            //     height: 600
+            // })
         </script>
     </body>
 
