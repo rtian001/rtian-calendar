@@ -173,7 +173,6 @@
         render(options) {
             if (typeof options == 'string') {
                 this.elem = options;
-                this.dom = document.querySelector(this.elem) || this.dom;
             }
             if (typeof options == "object") {
                 ('elem' in options) && (this.elem = options.elem);
@@ -187,6 +186,7 @@
                 ('height' in options) && (this.height = options.height);
                 ('theme' in options) && (this.theme = options.theme);
             }
+            this.dom = document.querySelector(this.elem) || this.dom;
             if (!this.dom) {
                 console.error('未设置日历容器ID')
                 return

@@ -12,14 +12,19 @@
         <script src="rtianCalendar.js"></script>
         <script src="rtianDuty-0.js"></script>
         <script>
+            let userAgent = navigator.userAgent;
+            let osType = userAgent.match(/Android|Linux|iPhone|iPad|Mobile|X11|Macintosh|Android|Windows/gi);
+            let isMobile = osType.includes('Mobile');
+
             var bashurl = 'http://222.21.113.253:3000';
             var cdate = formatDate(new Date());
             var rygh = '220002'
             window.onload = async () => {
                 //初始化日历组件
                 var duty_title = document.querySelector('.sectiontitle>span');
-                const calendar = new rtianCalender('#mycalendar')
+                const calendar = new rtianCalender()
                 calendar.render({
+                    elem: '#mycalendar',
                     // showPublicHoliday: true,
                     theme: "blank",
                     // date: '2025-12-01',
@@ -34,6 +39,7 @@
                         await init(date)
                     }
                 });
+                //初始化当前日期的值班信息表
                 await init(cdate)
 
                 const calendarBtn = document.querySelector('.calendarico');
@@ -56,6 +62,7 @@
                     const data = await getDayDuty(dt);
                     if (data) {
                         if (!rtianDuty.doms) {
+                            //首次渲染，构建页面元素及内容
                             rtianDuty.render({
                                 elem: '#duty-content',
                                 data: data,
@@ -63,13 +70,13 @@
                             })
                             fixLetterSpace();//修复 处级干部和带班校领导 对齐
                         } else {
+                            //仅更新人员数据
                             rtianDuty.reload({
                                 data: data
                             })
                         }
-
                     } else {
-                        duty_title.innerHTML = dtstr + '无值班';
+                        duty_title.innerHTML = '<span style="color:red">获取数据异常！</span>';
                     }
                 }
 
@@ -84,7 +91,9 @@
                         fetch(`${bashurl}/getduty?date=${date}`).then(resp => {
                             resolve(resp.json());
                         }).catch(err => {
-                            reject('无法从服务器获取数据。');
+                            console.error(`服务器: ${bashurl}`);
+                            console.error('无法从服务器 getduty 获取数据。');
+                            resolve(null);
                         })
                     })
                 }
@@ -95,7 +104,10 @@
                         fetch(`${bashurl}/getmydutydate?rygh=${rygh}&month=${month}`).then(resp => {
                             resolve(resp.json());
                         }).catch(err => {
-                            reject('无法从服务器获取数据。');
+                            console.error(`服务器: ${bashurl}`);
+                            console.error('无法从服务器 getmydutydate 获取数据。');
+
+                            resolve([]);
                         })
                     })
                 }
@@ -130,7 +142,7 @@
                 </div>
             </aside>
             <article>
-                <div class="sectiontitle"> 值班日期：<span>2026-06-13(周五)</span>
+                <div class="sectiontitle"> 值班日期：<span></span>
                     <span class="calendarico"><img src="calendar0.png" alt="" srcset=""></span>
                 </div>
                 <div id="duty-content" class="sectioncontent"></div>
