@@ -20,7 +20,9 @@ aside {
     box-shadow: 0 0 10px 0 #abc;
 }
 
-aside .calendar-title {
+
+
+aside .asdietitle {
     width: 280px;
     height: 40px;
     font-size: 20px;
@@ -28,7 +30,7 @@ aside .calendar-title {
     font-weight: bold;
     margin-bottom: 10px;
     text-align: left;
-    border-bottom: 1px solid #99c;
+    border-bottom: 1px solid #ccc;
     box-sizing: border-box;
 }
 
@@ -126,6 +128,10 @@ article {
         margin-bottom: 10px;
         display: flex;
         flex-direction: column;
+    }
+
+    .asidecalendar {
+        width: 100%;
     }
 
     .aside {
