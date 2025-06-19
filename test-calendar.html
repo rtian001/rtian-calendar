@@ -35,6 +35,7 @@
             //获取指定月份节假日，并渲染到日历
             getHolidays('2025-06').then(data => {
                 calender.renderMaker('2025-06-10,2025-06-22');
+                renderDury(dutys)
             })
 
             //自定义事件：切换月份时，获取当前月份的节假日，并渲染到日历
@@ -42,6 +43,7 @@
                 let ym = date.slice(0, 7)
                 getHolidays(ym).then(data => {
                     calender.renderMaker(data);
+                    renderDury(dutys)
                 })
                 //其他代码
                 resdom.innerHTML = 'change事件:切换到' + date;
@@ -52,34 +54,53 @@
             }
 
 
-
             //=============================================测试排班
-            let arr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-            let startvalue = 3;
-            let start = startvalue - 1;
-            let newarr = arr.slice(start).concat(arr.slice(0, start))
-            let days = calender.days;
-            let idx = 0
-            days.forEach(day => {
-                if (day.classList.contains('cday')) {
-                    day.innerHTML += '<br>' + newarr[idx];
-                    idx++;
-                    idx = idx % 7
-                    if (idx % 7 == 0) {
-                        console.log('day:', newarr)
-                        newarr = newarr.slice(start).concat(newarr.slice(0, start))
+            let arr = ['蒋恺', '赵登科', '张继栋', '时健', '乔谷阳', '王晨', '肖建飞', '赵书田', '周来']
+            var dutys = { data: arr, idx: 0 }
+            function renderDury(dutys) {
+                let days = calender.days;
+                let idx = dutys.idx;
+                let total = dutys.data.length;
+                let data = dutys.data.slice(0);
+                let colors = ['#0000FF', '#008000', '#FF0000', '#800080', '#FFA500', '#808080', '#00FFFF', '#FFC0CB', '#FFFF00']
+                let coloridx = 0
+                days.forEach(day => {
+                    if (day.classList.contains('cday')) {
+                        day.style.color = colors[coloridx]
+                        day.innerHTML += '<br>' + data[idx];
+                        idx++;
+                        idx = idx % total
+                        if (idx % total == 0) {
+                            coloridx++
+                            console.log('day:', data)
+                            data = randomeArr(data.slice(0))
+                            // console.log(data)
+                        }
                     }
+                })
+                console.log('last:', data)
+                console.log('last-idx:', idx % total)
+                dutys.data = data;
+                dutys.idx = idx % total;
+            }
+            function randomeArr(arr) {
+                let total = arr.length;
+                let res = Array(total)
+                let s = 5;
+                let temp = arr.reverse();
+                for (let i = 0; i < total; i++) {
+
+                    let r = ~~(Math.random() * (total - s) + s);
+                    while (res[r]) {
+                        r = ~~(Math.random() * (total - s) + s);
+                    }
+                    res[r] = temp[i];
+                    s = s > 0 ? s - 1 : 0;
                 }
-            })
-            console.log('newarr:', newarr)
-            console.log(idx, idx % 7);
-            idx = idx % 7
-            let lastarr = newarr.slice(start).concat(newarr.slice(0, start))
-            console.log(lastarr)
-            // calender.render({
-            //     width: 500,
-            //     height: 600
-            // })
+                return res
+            }
+
+
         </script>
     </body>
 
