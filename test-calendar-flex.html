@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="rtianCalendar-1.css">
+        <script src="rtianCalendar-1.js"></script>
+        <style>
+            #calendar {
+                /* margin: 0 auto; */
+                width: 500px;
+                height: 500px;
+            }
+
+            #res {
+                margin-top: 20px;
+            }
+
+            #btns>label {
+                font-size: 14px;
+                font-family: '微软雅黑';
+                display: block;
+                margin: 5px 0;
+            }
+
+            #btns>label>input[type=text] {
+                width: 20px;
+                text-align: center;
+                font-family: arial;
+                font-size: 16px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="calendar"></div>
+        <div id="btns">
+            <label>
+                <input type="radio" name="inputDate" value="nomal" checked>按原始顺序续排 </label>
+            <label>
+                <input type="radio" name="inputDate" value="sortIdx">每轮从第 <input type="text" size="2" id="idx"
+                    value="2"> 个续排 </label>
+            <label>
+                <input type="radio" name="inputDate" value="sortRandom">每轮随机续排；最小间隔 <input type="text" value="5"
+                    size="2" id="num">天 </label>
+            <button id="btn1">生成</button>
+            <button id="btn2">保存</button>
+        </div>
+        <div id="res"></div>
+        <script>
+            function getWeekNumber(date) {
+                // 设置 Date 对象的 firstDayOfWeek 为周一
+                date.setHours(0, 0, 0, 0);
+                // 设置 Date 对象的 firstDayOfYear 为 1 月 1 日
+                date.setDate(date.getDate() + 4 - (date.getDay() || 7));
+                // 计算当前日期是一年中的第几周
+                const yearStart = new Date(date.getFullYear(), 0, 1);
+                const weekNo = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+                return weekNo;
+            }
+            // 使用示例
+            var date = new Date(2025, 0, 5); // 月份是从0开始的，所以5月是4
+            console.log(getWeekNumber(date)); // 输出该日期是一年中的第几周
+            let arr = ['蒋恺', '赵登科', '张继栋', '时健', '乔谷阳', '王晨', '肖建飞', '赵书田', '周来']
+            var dutydata = { '2025-06': { data: arr, idx: 0, mode: 'nomal' } }
+            const resdom = document.querySelector('#res');
+            const calender = new rtianCalender('#calendar').render({
+                theme: 'grid',
+                width: 'auto',
+                height: 'auto',
+                fontSize: 18,
+                showToday: false,
+            });
+            var holiday = {}
+
+            //模拟异步获取自定义节假日
+            async function getHolidays(ym) {
+                let count = ~~(Math.random() * 5 + 3)
+                let arr = []
+                for (let i = 0; i < count; i++) {
+                    let d = ~~(Math.random() * 28 + 1)
+                    arr.push(`${ym}-${d.toString().padStart(2, '0')}`)
+                }
+                arr = [...new Set(arr)]
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(arr)
+                    }, 0);
+                })
+            }
+            //获取指定月份节假日，并渲染到日历
+            let month = '2025-06'
+            getHolidays(month).then(data => {
+                calender.renderMaker('2025-06-10,2025-06-22');
+                renderDury(dutydata[month])
+            })
+
+            //自定义事件：切换月份时，获取当前月份的节假日，并渲染到日历
+            calender.change = function (date) {
+                let ym = date.slice(0, 7)
+                getHolidays(ym).then(data => {
+                    calender.renderMaker(data);
+                    renderDury(dutydata[ym])
+                })
+                //其他代码
+                resdom.innerHTML = 'change事件:切换到' + date;
+            }
+            //自定义事件：切换到指定日期
+            calender.done = function (date) {
+                resdom.innerHTML = 'done事件:切换到' + date;
+            }
+
+
+            //=============================================测试排班
+
+            function renderDury(dutys) {
+                let modetype = dutys.mode;
+                let modes = modetype.split('-');
+                let mode = modes[0];
+                let n = modes.length > 0 ? modes[1] : 0;
+                let days = calender.days;
+                let idx = dutys.idx;
+                let total = dutys.data.length;
+                let data = dutys.data.slice(0);
+                let colors = ['#0000FF', '#008000', '#FF0000', '#800080', '#FFA500', '#808080', '#00FFFF', '#FFC0CB', '#FFFF00']
+                let coloridx = 0
+                days.forEach(day => {
+                    if (day.classList.contains('cday')) {
+                        day.style.color = colors[coloridx]
+                        let v = day.getAttribute('title').slice(-2) * 1
+                        day.innerHTML = v + '<br>' + data[idx];
+                        idx++;
+                        idx = idx % total
+                        if (idx % total == 0) {
+                            coloridx++
+                            data = dutySort[mode](data.slice(0))
+                            // console.log(data)
+                        }
+                    }
+                })
+                let year = calender.year;
+                let month = calender.month + 1;
+                if (month == 13) {
+                    month = 1; year += 1
+                }
+                let ym = year + '-' + month.toString().padStart(2, '0');
+                dutydata[ym] = { data, idx: idx % total, mode: modetype }
+
+            }
+
+            var dutySort = {
+                nomal: function (arr) {
+                    return arr
+                },
+                sortIdx: function (arr, idx = 2) {
+                    let res = arr.slice(idx).concat(arr.slice(0, idx))
+                    return res
+                },
+                sortRandom: function (arr, n) {
+                    let total = arr.length;
+                    let s = n || Math.ceil(total / 2);
+                    let res = Array(total)
+                    let temp = arr.reverse();
+                    for (let i = 0; i < total; i++) {
+                        let r = ~~(Math.random() * (total - s) + s);
+                        while (res[r]) {
+                            r = ~~(Math.random() * (total - s) + s);
+                        }
+                        res[r] = temp[i];
+                        s = s > 0 ? s - 1 : 0;
+                    }
+                    return res
+                }
+            }
+            document.querySelector('#btn1').onclick = function () {
+                let fun = document.querySelector('input[name=inputDate]:checked').value;
+                if (fun == 'sortIdx') {
+                    let idx = document.querySelector('#idx').value;
+                    fun = fun + '-' + idx;
+                } else if (fun == 'sortRandom') {
+                    let num = document.querySelector('#num').value;
+                    fun = fun + '-' + num;
+                }
+                let ym = calender.date.slice(0, 7)
+                dutydata[ym].mode = fun;
+                renderDury(dutydata[ym])
+            }
+
+            function randomeArr(arr) {
+                let total = arr.length;
+                let res = Array(total)
+                let s = 5;
+                let temp = arr.reverse();
+                for (let i = 0; i < total; i++) {
+
+                    let r = ~~(Math.random() * (total - s) + s);
+                    while (res[r]) {
+                        r = ~~(Math.random() * (total - s) + s);
+                    }
+                    res[r] = temp[i];
+                    s = s > 0 ? s - 1 : 0;
+                }
+                return res
+            }
+
+
+        </script>
+    </body>
+
+</html>

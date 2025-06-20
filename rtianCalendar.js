@@ -64,9 +64,9 @@
                     break;
                 }
             }
-            let table = `<table><thead>${th}</thead><tbody>${tr}</tbody></table>`
-            let head = '<div class="yearmonth"><div title="上一月" class="prev-month"><</div><div title="返回今日" class="month-year"></div><div title="下一月" class="next-month">></div></div>'
-            let html = `<div id="rtian-calendar" theme="${this.theme}">${head}${table}</div>`
+            let caption = '<caption><div class="yearmonth"><div title="上一月" class="prev-month"><</div><div title="返回今日" class="month-year"></div><div title="下一月" class="next-month">></div></div></caption>'
+            let table = `<table>${caption}<thead>${th}</thead><tbody>${tr}</tbody></table>`
+            let html = `<div id="rtian-calendar" theme="${this.theme}">${table}</div>`
             this.dom.innerHTML = html;
             let div = this.dom.querySelector('#rtian-calendar');
             div.style.width = (this.width - 10) + 'px';

@@ -7,6 +7,17 @@
         <title>Document</title>
         <link rel="stylesheet" href="rtianCalendar.css">
         <script src="rtianCalendar.js"></script>
+        <style>
+            #calendar {
+                width: 500px;
+                height: 600px;
+                margin: 0 auto;
+            }
+
+            #res {
+                margin-top: 20px;
+            }
+        </style>
     </head>
 
     <body>
@@ -14,7 +25,11 @@
         <div id="res"></div>
         <script>
             const resdom = document.querySelector('#res');
-            const calender = new rtianCalender('#calendar').render({ showPublicHoliday: false, width: 500, height: 600 });
+            const calender = new rtianCalender('#calendar').render({
+                showPublicHoliday: false,
+                width: 'auto',
+                height: 'auto'
+            });
             var holiday = {}
 
             //模拟异步获取自定义节假日
@@ -65,7 +80,7 @@
                 let colors = ['#0000FF', '#008000', '#FF0000', '#800080', '#FFA500', '#808080', '#00FFFF', '#FFC0CB', '#FFFF00']
                 let coloridx = 0
                 days.forEach(day => {
-                    if (day.classList.contains('cday')) {
+                    if (day.classList.contains('day')) {
                         day.style.color = colors[coloridx]
                         day.innerHTML += '<br>' + data[idx];
                         idx++;
