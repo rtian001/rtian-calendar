@@ -28,43 +28,51 @@
         }
         return jqb;
     }
-    // 获取年合朔表
     function getYearHS(y) {
-        let jqb = getYearJQ(y);
-        let hsb0 = [];
-        let hsb1 = {};
-        let _y = y - 1;
-        let _m = 10;
-        let res = [];
-        //购置月份
-        for (let i = 0; i < jqb.length; i++) {
+        let hsb=getYearHS1(y).concat(getYearHS1(y+1));
+     return hsb.slice(0,16)
+    }
+    // 获取年合朔表
+    function getYearHS1(y) {
+        let jqb = getYearJQ(y).map(n => Round(n))
+        let hsb0 = [], hsb1 = {};//hsb0仅记录朔jd，hsb1记录朔jd对应的节气
+        let lmtotal = 0;//两个冬至之间的月数，判断闰年
+        for(let i = 0;i < jqb.length;i++) {
             let _hs = getHS(y, jqb[i]);
             let _jd = Round(_hs);
-            if (!hsb0.includes(_jd)) {
+            if(!hsb0.includes(_jd)) {
                 hsb0.push(_jd);
                 hsb1[_jd] = [jqb[i]];
+                if(_jd >= Round(jqb[1]) && _jd <= Round(jqb[25])) {
+                    lmtotal++;
+                }
             } else {
                 hsb1[_jd].push(jqb[i]);
             }
         }
-        //无中气置闰
-        for (let i = 0; i < hsb0.length - 1; i++) {
-            let _jd = hsb0[i];
-            let jq = hsb1[_jd];
+        let m = 11;
+        let isLeap = false;
+        let res = []
+        for(let i = 0;i < lmtotal;i++) {
+            let lm = m + i
+            let ly = y - 1
+            let hs = hsb0[i]
+            let jq = hsb1[hs]
             let isleap = false;
-            let dn = hsb0[i + 1] - _jd;
-            if (jq.length == 1 && jqb.indexOf(jq[0]) % 2 == 0) {
-                isleap = true;
-            } else {
-                _m++;
-                if (_m > 12) _m = 1, _y++;
+            let dn=hsb0[i+1]-hs
+            if(lmtotal == 13) {//13个朔日，
+                if(jq.length == 1 && jqb.indexOf(jq[0]) % 2 == 0 && !isLeap) {
+                    lm = --m + i
+                    isleap = isLeap = true
+                } else {
+                    isleap = false
+                }
             }
-            if (_y == y || 1 == 1) {
-                let ym = `${_y}-${_m}`;
-                res.push({ ym: ym, hs: _jd, jq: jq, isleap: isleap, dn: dn });
-            }
+            if(lm > 12) ly++
+            let ym = `${ly}-${lm % 12 || 12}`
+            res.push({ ym, hs: hs, jq: jq, isleap ,dn})
         }
-        return res;
+        return res
     }
     // 初始化主函数年节气表和年合朔表
     function getLunarInfo(y) {
@@ -193,8 +201,9 @@
         let jqb = jqb0.map(n => Round(n));
         let idx = jqb.indexOf(Round(jd));
         if (idx > -1) {
-            let { h, m, s } = JD2GL(jqb0[idx]);
-            return { jqmc: SolarTerms[(idx + 22) % 24], jqsj: `${h}:${m}:${s}` };
+            // let { h, m, s } = JD2GL(jqb0[idx]);
+            // return { jqmc: SolarTerms[(idx + 22) % 24], jqsj: `${h}:${m}:${s}` };
+            return SolarTerms[(idx + 22) % 24];
         }
         return null;
     }
@@ -525,6 +534,9 @@
             jd1 = jd0 - stDegree / stDegreep;
         } while (abs(jd1 - jd0) >= 0.0000001);
         var jd = jd1 + 8 / 24 - deltatT(yy) / 86400;
+        //修正节气:保证1900年至今数据与香港天文台农历一致
+        if([2419729, 2420034, 2443894].includes(Round(jd))) jd += 1;
+        if([2421571, 2425133, 2425420].includes(Round(jd))) jd -= 1;
         return jd;
     }
     function getHS(yy, jda) {//计算合朔日
@@ -556,6 +568,8 @@
         } else if (jda >= getjq_12a || Round(getjq_12a) == Round(jda)) {
             res = getjq_12a;
         }
+        //修正合朔:保证1900年至今数据与香港天文台农历一致
+        if([2420455, 2420898, 2422640].includes(Round(res))) res -= 1;
         return res;
     }
 

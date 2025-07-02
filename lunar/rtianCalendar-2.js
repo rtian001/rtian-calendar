@@ -311,7 +311,7 @@
                         dom.classList.add('lunar');
                     }
                     if (dinfo['jq']) {
-                        str = dinfo['jq'].jqmc;
+                        str = dinfo['jq'];
                         dom.classList.add('term');
                     }
                     let cnY = dinfo['lyearCn'];
