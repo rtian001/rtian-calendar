@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="rtianCalendar-1.css">
         <style>
             #mycalerdar {
-                width: 500px;
+                width: 600px;
                 height: 700px;
             }
 
@@ -15,16 +15,28 @@
                 font-size: 10px;
             }
 
-            .lunar>.terms {
+            .lunar>.terms,
+            .lunar1 {
                 color: #33f;
             }
 
-            .term>.terms {
+            .term>.terms,
+            .term1 {
                 color: #f33;
             }
 
             .active>.terms {
                 color: #ff0;
+            }
+
+            .month-year>input {
+                width: 66px;
+                height: 100%;
+                display: inline-block;
+                border: 0;
+                text-align: center;
+                font: bold 1em "Microsoft YaHei";
+                vertical-align: center;
             }
         </style>
         <script src="calendar-2.js"></script>
@@ -42,7 +54,7 @@
                 height: 'auto',
                 theme: 'block',
                 fontSize: 18,
-                date: '2026-01-04',
+                date: '2025-12-04',
                 showLunar: true,
                 change: function (dt) {
                     let y = mycalendar.year;
