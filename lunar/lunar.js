@@ -3,8 +3,13 @@
     var rLunar = {
         solar2lunar,
         lunar2solar,
+        getQSB,
         yueli,
-        lunarInfo: {}
+        qsb: {
+            jqb: [],
+            hsb: [],
+            ym: [],
+        }
     };
     //=============日历部分：公历、农历、闰月、天干地支、星座
     var
@@ -19,90 +24,72 @@
         nStr5 = "魔羯,水瓶,双鱼,白羊,金牛,双子,巨蟹,狮子,处女,天秤,天蝎,射手,魔羯".split(',');
 
     //============================================
-    // 获取年节气表
-    function getYearJQ(y) {
-        let jqb = [];
-        for (let i = -7; i < 24; i++) {
-            let _jq = getJQ(y, i);
-            jqb.push(_jq);
+
+    /**
+     * 根据任意儒略日jd，获取气朔表
+     * jqb：节气表，返回其对应的两个冬至之间的节气数组，数组长度为25，每个元素为对应节气的儒略日
+     * hsb：合朔表，返回节气表对应的朔数组，数组长度为13（含第1个冬至之前的朔），每个元素为对应合朔的儒略日
+     *      两个冬至之间正常应该是12个月；如果是13个月（hsb数组长度为14），则有闰月
+     * ym：月历表，上年十一月~当年十月；
+     *      isleap：闰月，无中气置闰
+     *      dn：农历月天数
+     * 
+     * @param {*} jd 任意儒略日
+     */
+    function getQSB(jd) {
+        jd = Round(jd);
+        let y = JD2GL(jd).Y;
+        let dz = Round(getJQ(y, 18));//当年冬至
+        let hs = Round(getHS(y, dz));
+        if (jd >= hs) y++;
+        let jqb = [], hsb = [], ym = [];
+        for (let i = -6; i < 19; i++) {//获取两个冬至之间的节气
+            let jq = Round(getJQ(y, i));
+            jqb.push(jq);
+            hs = Round(getHS(y, jq));
+            if (hsb.includes(hs)) continue;
+            hsb.push(hs);
         }
-        return jqb;
-    }
-    function getYearHS(y) {
-        let hsb=getYearHS1(y).concat(getYearHS1(y+1));
-     return hsb.slice(0,16)
-    }
-    // 获取年合朔表
-    function getYearHS1(y) {
-        let jqb = getYearJQ(y).map(n => Round(n))
-        let hsb0 = [], hsb1 = {};//hsb0仅记录朔jd，hsb1记录朔jd对应的节气
-        let lmtotal = 0;//两个冬至之间的月数，判断闰年
-        for(let i = 0;i < jqb.length;i++) {
-            let _hs = getHS(y, jqb[i]);
-            let _jd = Round(_hs);
-            if(!hsb0.includes(_jd)) {
-                hsb0.push(_jd);
-                hsb1[_jd] = [jqb[i]];
-                if(_jd >= Round(jqb[1]) && _jd <= Round(jqb[25])) {
-                    lmtotal++;
-                }
-            } else {
-                hsb1[_jd].push(jqb[i]);
-            }
-        }
-        let m = 11;
-        let isLeap = false;
-        let res = []
-        for(let i = 0;i < lmtotal;i++) {
-            let lm = m + i
-            let ly = y - 1
-            let hs = hsb0[i]
-            let jq = hsb1[hs]
+        let isLeap = hsb.length > 13;
+        let ly = y - 1;
+        let lm = 11;
+        for (let i = 0; i < hsb.length - 1; i++) {
+            let hs = hsb[i];
+            let hs1 = hsb[i + 1];
+            let dn = hs1 - hs;
             let isleap = false;
-            let dn=hsb0[i+1]-hs
-            if(lmtotal == 13) {//13个朔日，
-                if(jq.length == 1 && jqb.indexOf(jq[0]) % 2 == 0 && !isLeap) {
-                    lm = --m + i
-                    isleap = isLeap = true
-                } else {
-                    isleap = false
-                }
+            if (isLeap) {
+                let zq = jqb[2 * i];
+                isleap = zq >= hs1;
+                if (isleap) lm -= 1, isLeap = false;
             }
-            if(lm > 12) ly++
-            let ym = `${ly}-${lm % 12 || 12}`
-            res.push({ ym, hs: hs, jq: jq, isleap ,dn})
+            if (lm > 12) lm = 1, ly += 1;
+            ym.push([hs, ly, lm, dn, isleap]);
+            lm++;
         }
-        return res
+        return rLunar.qsb = { jqb, hsb, ym };
     }
-    // 初始化主函数年节气表和年合朔表
-    function getLunarInfo(y) {
-        if (!rLunar.lunarInfo['lunar-' + y]) {
-            rLunar.lunarInfo['lunar-' + y] = {
-                'JQB': getYearJQ(y),
-                'HSB': getYearHS(y)
-            };
-        }
-        return rLunar.lunarInfo['lunar-' + y];
-    }
+
     //---------------------
     function solar2lunar(y, m, d) {
-        let data = getLunarInfo(y);
-        let hsb = data['HSB'];
         let jd = Round(JD(y, m, d));
-        let idx = hsb.findIndex(n => n.hs > jd);
-        let hs = hsb[idx - 1];
-        let [ly, lm] = hs.ym.split('-').map(n => n * 1);
-        let ld = jd - hs.hs + 1;
-        let dn = hs.dn;
-        let isleap = hs.isleap;
+        let qsb = getQSB(jd);
+        let hsb = qsb['hsb'];
+        let idx = hsb.length;
+        while (jd < hsb[--idx]);
+        let hs = qsb['ym'][idx];
+        let [_hs, ly, lm, dn, isleap] = hs;
+        let ld = jd - _hs + 1;
         let obj = { year: y, month: m, day: d, lyear: ly, lmonth: lm, lday: ld, ldn: dn, isleap };
         return getDayinfo(obj);
     }
     function lunar2solar(ly, lm, ld, isleap = false) {
-        let data = getLunarInfo(ly);
-        let hsb = data['HSB'];
-        let ym = ly + '-' + lm;
-        let hs = hsb.find(v => v.ym == ym && v.isleap == isleap).hs;
+        let y = lm > 10 ? ly + 1 : ly;
+        let jd = Round(JD(y, 1, 1));
+        let qsb = getQSB(jd);
+        let hsb = qsb['ym'];
+        let minfo = hsb.find(v => v[1] == ly && v[2] == lm && v[4] == isleap);
+        let hs = minfo[0];
         let { Y, M, D } = JD2GL(hs + ld - 1);
         return solar2lunar(Y, M, D);
     }
@@ -126,27 +113,20 @@
     function yueli(y, m) {
         let jd = Round(JD(y, m, 1));
         let dn = Round(JD(y, m + 1, 1)) - jd;
-        let { lyear, lmonth, lday, ldn, isleap } = solar2lunar(y, m, 1);
-        // let [ly,lm,ld,ldn,isLeap]=[lyear,lmonth,lday,ldn,isleap];
+        let lunarinfo = solar2lunar(y, m, 1);
+        let { lday, ldn } = lunarinfo;
         let res = [];
         for (let i = 0; i < dn; i++) {
-            let obj = {};
             let jd0 = jd + i;
-            let { Y, M, D } = JD2GL(jd0);
+            let { D } = JD2GL(jd0);
             if (lday > ldn) {
-                let _lunar = solar2lunar(y, m, D);
-                lyear = _lunar.lyear;
-                lmonth = _lunar.lmonth;
-                lday = _lunar.lday;
-                ldn = _lunar.ldn;
-                isleap = _lunar.isleap;
+                lunarinfo = solar2lunar(y, m, D);
+                lday = 1;
+                ldn = lunarinfo.ldn;
             }
-            obj = {
-                year: Y, month: M, day: D,
-                lyear: lyear, lmonth: lmonth, lday: lday,
-                ldn: ldn,
-                isleap: isleap,
-            };
+            lunarinfo.day = D;
+            lunarinfo.lday = lday;
+            let obj = structuredClone(lunarinfo);
             res.push(getDayinfo(obj));
             lday++;
         }
@@ -175,15 +155,14 @@
         return toGanZhi(lYear - 4);
     }
     function toGanZhiMonth(jd) {
-        let y = JD2GL(jd)['Y'];
         let JZ = Round(JD(1998, 12, 7));//以1998年12月7日大雪甲子进行推算
-        let data = getLunarInfo(y);
-        let jqb = data['JQB'].map(n => Round(n));
-        let jq0 = jqb[1];
+        let data = rLunar.qsb;
+        let jqb = data['jqb'];
+        let jq0 = jqb[0];
         let offset = int2((jd - jq0) / 30.43685);
-        let jq1 = jqb[2 * offset + 2];
+        let jq1 = jqb[2 * offset + 1];
         if (offset < 12 && jd >= jq1) offset += 1;
-        let _offset = offset + int2((jqb[13] - JZ) / 365.2422) * 12 + 900000;
+        let _offset = offset + int2((jqb[12] - JZ) / 365.2422) * 12 + 900000;
         let gzM = toGanZhi(_offset);
         return gzM;
     }
@@ -195,17 +174,15 @@
         return (Gan[(offset + 12000000) % 10] + Zhi[(offset + 12000000) % 12]);
     }
     function toSolarTerm(jd) {
-        let y = JD2GL(jd)['Y'];
-        let data = getLunarInfo(y);
-        let jqb0 = data['JQB'];
-        let jqb = jqb0.map(n => Round(n));
+        let data = rLunar.qsb;
+        let jqb = data['jqb'];
         let idx = jqb.indexOf(Round(jd));
         if (idx > -1) {
-            // let { h, m, s } = JD2GL(jqb0[idx]);
-            // return { jqmc: SolarTerms[(idx + 22) % 24], jqsj: `${h}:${m}:${s}` };
-            return SolarTerms[(idx + 22) % 24];
+            return SolarTerms[(idx + 23) % 24];
+        } else {
+            let y = JD2GL(jd)['Y'];
+            return (Round(jd) == Round(getJQ(y, 17))) ? '大雪' : null;
         }
-        return null;
     }
     function getCnZodiac(y) {
         return CnZodiac[(y - 4) % 12];
@@ -535,8 +512,9 @@
         } while (abs(jd1 - jd0) >= 0.0000001);
         var jd = jd1 + 8 / 24 - deltatT(yy) / 86400;
         //修正节气:保证1900年至今数据与香港天文台农历一致
-        if([2419729, 2420034, 2443894].includes(Round(jd))) jd += 1;
-        if([2421571, 2425133, 2425420].includes(Round(jd))) jd -= 1;
+        if ([2419729, 2420034, 2443894].includes(Round(jd))) jd += 1;
+        if ([2421571, 2425133, 2425420].includes(Round(jd))) jd -= 1;
+        if (Round(jd) == 1985940) jd += 2;
         return jd;
     }
     function getHS(yy, jda) {//计算合朔日
@@ -569,7 +547,7 @@
             res = getjq_12a;
         }
         //修正合朔:保证1900年至今数据与香港天文台农历一致
-        if([2420455, 2420898, 2422640].includes(Round(res))) res -= 1;
+        if ([2420455, 2420898, 2422640].includes(Round(res))) res -= 1;
         return res;
     }
 
@@ -652,4 +630,6 @@
 
     //=========================================
     window.rLunar = rLunar;
+    window.JD2GL = JD2GL;
+    window.JD = JD;
 })(window);
